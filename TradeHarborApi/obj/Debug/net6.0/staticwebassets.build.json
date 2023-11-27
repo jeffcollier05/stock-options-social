@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "v+ImA3+dsM+wwlq3slfB2f5zsv3FP0TXJ7JpUbouKPA=",
+  "Source": "TradeHarborApi",
+  "BasePath": "_content/TradeHarborApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "PbDoE9Wh0/6DbHG20Dul4EaAmdg7bULpyGU6G55UQ76J+8zTQWzkRjIa8xr3y0je8sGexX0h15pmTk1s+9U1+A==",
+  "success": true,
+  "projectFilePath": "D:\\desktop-d-drive\\stock-options-social\\TradeHarborApi\\TradeHarborApi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Jeffrey\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\Jeffrey\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\Jeffrey\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\Jeffrey\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\Jeffrey\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\Jeffrey\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}

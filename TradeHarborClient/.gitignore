@@ -43,5 +43,5 @@ Thumbs.db
 
 
 # .NET
-bin/
-obj/
+TradeHarborApi/bin/
+TradeHarborApi/obj/

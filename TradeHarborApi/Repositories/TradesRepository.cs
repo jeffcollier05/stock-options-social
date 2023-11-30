@@ -6,6 +6,7 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using TradeHarborApi.Configuration;
+using TradeHarborApi.Models;
 
 namespace TradeHarborApi.Repositories
 {
@@ -18,19 +19,37 @@ namespace TradeHarborApi.Repositories
             _config = config;
         }
 
-        private DbConnection GetConnection()
+        private DbConnection GetSqlConnection()
         {
             var connection = new SqlConnection(_config.SqlConnectionString);
             connection.Open();
             return connection;
         }
 
-        public async Task<IEnumerable<object>> GetTrades()
+        public async Task<IEnumerable<TradePost>> GetTrades()
         {
-            var query = "select * from dbo.Trades";
-            using var connection = GetConnection();
-            var asdf = await connection.QueryAsync<object>(query);
-            return asdf;
+            var query = @"
+                    SELECT 
+                        t.[User_id] as UserId,
+                        t.Ticker,
+                        p.Position,
+                        op.[Option],
+                        t.Strikeprice,
+                        t.Comment,
+                        t.[Timestamp],
+                        a.FirstName,
+                        a.LastName,
+                        a.Username,
+                        a.ProfilePictureUrl
+                    FROM dbo.trades t
+                    JOIN reference.[Option] op on op.Option_id = t.[Option]
+                    JOIN reference.[Position] p on p.Position_id = t.Position
+                    JOIN dbo.[Accounts] a on a.User_id = t.User_id
+                    ";
+
+            using var connection = GetSqlConnection();
+            var tradePosts = await connection.QueryAsync<TradePost>(query);
+            return tradePosts;
         }
     }
 }

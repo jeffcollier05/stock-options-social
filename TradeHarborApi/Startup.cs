@@ -23,6 +23,15 @@ namespace TradeHarborApi
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+            services.AddCors();
+
+            var corsOrigins = Configuration.GetSection("Cors:Origins").Get<string[]>();
+            var corsMethods = Configuration.GetSection("Cors:Methods").Get<string[]>();
+            services.AddCors(options => options.AddDefaultPolicy(policy =>
+                policy.SetIsOriginAllowedToAllowWildcardSubdomains()
+                .WithOrigins(corsOrigins)
+                .WithMethods(corsMethods)
+                .AllowAnyHeader()));
         }
 
         public void Configure(IApplicationBuilder app)
@@ -35,6 +44,7 @@ namespace TradeHarborApi
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {

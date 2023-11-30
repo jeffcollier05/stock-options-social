@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using TradeHarborApi.Models;
 using TradeHarborApi.Services;
 
 namespace TradeHarborApi.Controllers
@@ -16,9 +18,10 @@ namespace TradeHarborApi.Controllers
 
 
         [HttpGet]
-        public async Task GetTrades()
+        public async Task<IEnumerable<TradePost>> GetTrades()
         {
-            await _tradeService.GetTrades();
+            var tradePosts = await _tradeService.GetTrades();
+            return tradePosts;
         }
     }
 }

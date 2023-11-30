@@ -1,4 +1,5 @@
-﻿using TradeHarborApi.Repositories;
+﻿using TradeHarborApi.Models;
+using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Services
 {
@@ -11,9 +12,10 @@ namespace TradeHarborApi.Services
             _repo = repo;
         }
 
-        public async Task GetTrades()
+        public async Task<IEnumerable<TradePost>> GetTrades()
         {
-            var asdf = await _repo.GetTrades();
+            var tradePosts = await _repo.GetTrades();
+            return tradePosts;
         }
     }
 }

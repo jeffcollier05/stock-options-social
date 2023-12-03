@@ -9,6 +9,6 @@
             Configuration = configuration;
         }
 
-        public string SqlConnectionString => Configuration["Database:SqlConnectionString"];
+        public string SqlConnectionString => Configuration["ConnectionStrings:SqlConnectionString"];
     }
 }

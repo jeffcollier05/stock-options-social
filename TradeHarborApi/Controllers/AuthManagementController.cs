@@ -72,6 +72,43 @@ namespace TradeHarborApi.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = await _userManager.FindByEmailAsync(requestDto.Email);
+
+                if (existingUser != null)
+                {
+                    var isPasswordValid = await _userManager.CheckPasswordAsync(existingUser, requestDto.Password);
+                    if (isPasswordValid)
+                    {
+                        var token = GenerateJwtToken(existingUser);
+                        return Ok(new RegistrationRequestResponse()
+                        {
+                            Token = token,
+                            Result = true
+                        });
+                    }
+                    else
+                    {
+                        return BadRequest(error: "Invalid authentication");
+                    }
+                }
+                else
+                {
+                    return BadRequest(error: "Invalid authentication.");
+                }
+            }
+            else
+            {
+                return BadRequest(error: "Required information is missing.");
+            }
+        }
+
+
+
         private string GenerateJwtToken(IdentityUser user)
         {
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);

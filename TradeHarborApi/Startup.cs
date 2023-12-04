@@ -85,10 +85,16 @@ namespace TradeHarborApi
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false, // THIS NEEDS TO BE TRUE
-                    ValidateAudience = false,
-                    RequireExpirationTime = false,
-                    ValidateLifetime = false
+
+                    // Set the valid issuer and audience values
+                    ValidateIssuer = true,
+                    ValidIssuer = Configuration.GetSection(key: "JwtConfig:ValidIssuer").Value,
+                    ValidateAudience = true,
+                    ValidAudience = Configuration.GetSection(key: "JwtConfig:ValidAudience").Value,
+
+                    // Enable expiration time and lifetime validation
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true
                 };
             });
 

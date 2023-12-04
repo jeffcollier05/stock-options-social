@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using TradeHarborApi.Data;
 using TradeHarborApi.Models;
 using TradeHarborApi.Services;
 
@@ -25,6 +27,12 @@ namespace TradeHarborApi.Controllers
         {
             var tradePosts = await _tradeService.GetTrades();
             return tradePosts;
+        }
+
+        [HttpPost]
+        public void PostTrade()
+        {
+            var asdf = HttpContext.User;
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using TradeHarborApi.Common;
@@ -17,13 +19,27 @@ namespace TradeHarborApi.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtConfig _jwtConfig;
+        private readonly IConfiguration _configuration;
 
         public AuthManagementController(
             UserManager<IdentityUser> userManager,
-            IOptionsMonitor<JwtConfig> _optionsMonitor)
+            IOptionsMonitor<JwtConfig> _optionsMonitor,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _jwtConfig = _optionsMonitor.CurrentValue;
+            _configuration = configuration;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult<string> GetEmail()
+        {
+            var allClaims = User?.Claims.Select(c => new { c.Type, c.Value });
+            var email = User?.Claims
+                .Select(c => new { c.Type, c.Value })
+                .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email);
+            return Ok(new { allClaims, email });
         }
 
         [HttpPost]
@@ -110,6 +126,8 @@ namespace TradeHarborApi.Controllers
             {
                 Subject = new ClaimsIdentity(new[]
                 {
+                    new Claim(type: JwtRegisteredClaimNames.Iss, value: _configuration.GetSection(key: "JwtConfig:ValidIssuer")?.Value),
+                    new Claim(type: JwtRegisteredClaimNames.Aud, value: _configuration.GetSection(key: "JwtConfig:ValidAudience")?.Value),
                     new Claim(type: "Id", value: user.Id),
                     new Claim(type: JwtRegisteredClaimNames.Sub, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),

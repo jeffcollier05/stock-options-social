@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using TradeHarborApi.Common;
 using TradeHarborApi.Configuration;
-using TradeHarborApi.Models;
 using TradeHarborApi.Models.Dtos;
-using TradeHarborApi.Services;
 
 namespace TradeHarborApi.Controllers
 {
@@ -29,7 +26,6 @@ namespace TradeHarborApi.Controllers
             _jwtConfig = _optionsMonitor.CurrentValue;
         }
 
-
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequestDto requestDto)
         {
@@ -38,7 +34,7 @@ namespace TradeHarborApi.Controllers
                 var emailExist = await _userManager.FindByEmailAsync(requestDto.Email);
                 if (emailExist != null)
                 {
-                    return BadRequest(error: "Email already exists!");
+                    return BadRequest(error: Constants.EMAIL_ALREADY_EXISTS);
                 }
                 else
                 {
@@ -61,14 +57,14 @@ namespace TradeHarborApi.Controllers
                     }
                     else
                     {
-                        //return BadRequest(error: "Error creating the user, please try again later.");
-                        return BadRequest(error: isCreated.Errors.Select(x => x.Description).ToList());
+                        return BadRequest(error: Constants.REQUEST_FAILED);
+                        //return BadRequest(error: isCreated.Errors.Select(x => x.Description).ToList());
                     }
                 }
             }
             else
             {
-                return BadRequest(error: "Required information is missing.");
+                return BadRequest(error: Constants.INCOMPLETE_REQUEST);
             }
         }
 
@@ -93,21 +89,19 @@ namespace TradeHarborApi.Controllers
                     }
                     else
                     {
-                        return BadRequest(error: "Invalid authentication");
+                        return BadRequest(error: Constants.INVALID_AUTHENTICATION);
                     }
                 }
                 else
                 {
-                    return BadRequest(error: "Invalid authentication.");
+                    return BadRequest(error: Constants.INVALID_AUTHENTICATION);
                 }
             }
             else
             {
-                return BadRequest(error: "Required information is missing.");
+                return BadRequest(error: Constants.INCOMPLETE_REQUEST);
             }
         }
-
-
 
         private string GenerateJwtToken(IdentityUser user)
         {
@@ -121,7 +115,7 @@ namespace TradeHarborApi.Controllers
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddHours(4),
+                Expires = DateTime.UtcNow.AddMinutes(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     algorithm: SecurityAlgorithms.HmacSha256)
             };

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ErrorViewModel } from 'src/app/models/errorViewModel';
 import { TradePost } from 'src/app/models/tradePost';
 import { ApiService } from 'src/app/services/api.service';
 
@@ -11,11 +12,15 @@ export class FeedViewComponent {
 
   public tradePosts: TradePost[] = []
 
-  constructor(private apiService: ApiService) { this.getTradePosts(); }
+  constructor(private apiService: ApiService) {
+    this.getTradePosts();
+  }
 
   private getTradePosts(): void {
     this.apiService.getTradePosts().subscribe(resp => {
-      this.tradePosts = resp;
+      if (!(resp instanceof ErrorViewModel)) {
+        this.tradePosts = resp;
+      }
     });
   }
 

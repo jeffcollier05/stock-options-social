@@ -1,0 +1,19 @@
+<div class="page">
+    <div class="form-container">
+        <h1>Register Account</h1>
+        <h2>
+            Name:
+            <input [(ngModel)]="registerDto.name">
+        </h2>
+        <h2>
+            Email:
+            <input [(ngModel)]="registerDto.email">
+        </h2>
+        <h2>
+            Password:
+            <input [(ngModel)]="registerDto.password">
+        </h2>
+        <button (click)="register(registerDto)">Register</button>
+        <a (click)="loginAccount()">Login to account</a>
+    </div>
+</div>

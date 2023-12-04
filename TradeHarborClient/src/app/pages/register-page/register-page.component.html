@@ -13,7 +13,20 @@
             Password:
             <input [(ngModel)]="registerDto.password">
         </h2>
-        <button (click)="register(registerDto)">Register</button>
-        <a (click)="loginAccount()">Login to account</a>
+        <div *ngIf="!waitingOnResponse">
+            <span *ngIf="!successRegister" class="error-message">{{errorMessage}}</span>
+            <span *ngIf="successRegister" class="success-message">Successful registration!</span>
+        </div>
+        <div>
+            <button
+                mat-raised-button
+                color="accent"
+                (click)="register(registerDto)"
+                [disabled]="waitingOnResponse">
+                    <span *ngIf="!waitingOnResponse">Register</span>
+                    <mat-spinner *ngIf="waitingOnResponse" diameter="30"></mat-spinner>
+            </button>
+            <a (click)="goToLoginPage()">Login to account</a>
+        </div>
     </div>
 </div>

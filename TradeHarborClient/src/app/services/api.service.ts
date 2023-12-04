@@ -12,7 +12,7 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   public getTradePosts(): Observable<TradePost[] | ErrorViewModel> {
-    return this.httpGet<TradePost[]>(environment.apiUrl + '/trades/gettrades')
+    return this.httpGet<TradePost[]>('trades/gettrades')
   }
 
   // Wrapper for GET requests

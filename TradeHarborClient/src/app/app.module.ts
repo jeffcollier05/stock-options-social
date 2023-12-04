@@ -13,6 +13,8 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationInterceptor } from './services/interceptor';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,7 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     FeedViewComponent,
     HomePageComponent,
     LoginPageComponent,
-    RegisterPageComponent
+    RegisterPageComponent,
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,9 @@ import { RegisterPageComponent } from './pages/register-page/register-page.compo
     MatIconModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     {

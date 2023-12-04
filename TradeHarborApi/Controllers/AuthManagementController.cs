@@ -115,7 +115,7 @@ namespace TradeHarborApi.Controllers
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(1),
+                Expires = DateTime.UtcNow.AddMinutes(10),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     algorithm: SecurityAlgorithms.HmacSha256)
             };

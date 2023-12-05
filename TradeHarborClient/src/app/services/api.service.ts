@@ -4,6 +4,7 @@ import { TradePost } from '../models/tradePost';
 import { Observable, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorViewModel } from '../models/errorViewModel';
+import { CreateTradePostRequest } from '../models/createTradePostRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,10 @@ export class ApiService {
 
   public getTradePosts(): Observable<TradePost[] | ErrorViewModel> {
     return this.httpGet<TradePost[]>('trades/gettrades')
+  }
+
+  public createTradePost(request: CreateTradePostRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/CreateTradePost', request)
   }
 
   // Wrapper for GET requests

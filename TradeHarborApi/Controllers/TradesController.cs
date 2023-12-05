@@ -15,10 +15,12 @@ namespace TradeHarborApi.Controllers
     public class TradesController : ControllerBase
     {
         private readonly TradeService _tradeService;
+        private readonly AuthService _authService;
 
-        public TradesController(TradeService tradeService)
+        public TradesController(TradeService tradeService, AuthService authService)
         {
             _tradeService = tradeService;
+            _authService = authService;
         }
 
 
@@ -30,9 +32,9 @@ namespace TradeHarborApi.Controllers
         }
 
         [HttpPost]
-        public void PostTrade()
+        public async Task CreateTradePost([FromBody] CreateTradePostRequest request)
         {
-            var asdf = HttpContext.User;
+            await _tradeService.CreateTradePost(request);
         }
     }
 }

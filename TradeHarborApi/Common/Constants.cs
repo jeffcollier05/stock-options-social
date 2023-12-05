@@ -9,5 +9,7 @@
         public const string REQUEST_FAILED = "Error processing the request, please try again later.";
 
         public const string EMAIL_ALREADY_EXISTS = "The email already exists.";
+
+        public const string CLAIM_ID = "Id";
     }
 }

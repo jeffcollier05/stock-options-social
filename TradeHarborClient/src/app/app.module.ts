@@ -15,6 +15,13 @@ import { AuthenticationInterceptor } from './services/interceptor';
 import { RegisterPageComponent } from './pages/register-page/register-page.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ActionBarComponent } from './components/action-bar/action-bar.component';
+import { CreatePostDialogComponent } from './components/create-post-dialog/create-post-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -24,6 +31,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     HomePageComponent,
     LoginPageComponent,
     RegisterPageComponent,
+    ActionBarComponent,
+    CreatePostDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +43,11 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     FormsModule,
     MatButtonModule,
     MatProgressSpinnerModule,
+    MatDialogModule,
+    CommonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     {

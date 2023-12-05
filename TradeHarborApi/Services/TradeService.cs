@@ -6,16 +6,25 @@ namespace TradeHarborApi.Services
     public class TradeService
     {
         private readonly TradesRepository _repo;
+        private readonly AuthService _authService;
 
-        public TradeService(TradesRepository repo)
+        public TradeService(TradesRepository repo, AuthService authService)
         {
             _repo = repo;
+            _authService = authService;
         }
 
         public async Task<IEnumerable<TradePost>> GetTrades()
         {
             var tradePosts = await _repo.GetTrades();
             return tradePosts;
+        }
+
+        public async Task CreateTradePost(CreateTradePostRequest request)
+        {
+            request.Id = _authService.GetUserIdFromJwt();
+            request.Timestamp = DateTime.UtcNow;
+            var asdf = await _repo.CreateTradePost(request);
         }
     }
 }

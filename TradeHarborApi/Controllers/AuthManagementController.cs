@@ -148,7 +148,7 @@ namespace TradeHarborApi.Controllers
                 {
                     new Claim(type: JwtRegisteredClaimNames.Iss, value: _configuration.GetSection(key: "JwtConfig:ValidIssuer")?.Value),
                     new Claim(type: JwtRegisteredClaimNames.Aud, value: _configuration.GetSection(key: "JwtConfig:ValidAudience")?.Value),
-                    new Claim(type: "UserId", value: user.Id),
+                    new Claim(type: Constants.CLAIM_ID, value: user.Id),
                     new Claim(type: JwtRegisteredClaimNames.Sub, value: user.UserName),
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),

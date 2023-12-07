@@ -2,7 +2,7 @@
 {
     public class CreateTradePostRequest
     {
-        public string Id { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
 
         public string Ticker { get; set; } = string.Empty;
 

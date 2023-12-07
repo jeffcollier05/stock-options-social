@@ -10,7 +10,7 @@
 
         public const string EMAIL_ALREADY_EXISTS = "The email already exists.";
 
-        public const string CLAIM_ID = "Id";
+        public const string CLAIM_ID = "UserId";
 
         public const string USERNAME_ALREADY_EXISTS = "The username already exists.";
     }

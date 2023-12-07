@@ -27,7 +27,7 @@ namespace TradeHarborApi.Services
 
         public async Task CreateTradePost(CreateTradePostRequest request)
         {
-            request.Id = _authService.GetUserIdFromJwt();
+            request.UserId = _authService.GetUserIdFromJwt();
             request.Timestamp = DateTime.UtcNow;
             var asdf = await _repo.CreateTradePost(request);
         }

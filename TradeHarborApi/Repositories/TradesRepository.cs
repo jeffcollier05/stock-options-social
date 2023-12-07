@@ -82,7 +82,7 @@ namespace TradeHarborApi.Repositories
 
                     INSERT INTO [dbo].[Trades]
                         ([User_id], [Ticker], [Position], [Option], [Strikeprice], [Comment], [Timestamp])
-                    VALUES (@Id, @Ticker, @PositionId, @OptionId, @Strikeprice, @Comment, @Timestamp);
+                    VALUES (@UserId, @Ticker, @PositionId, @OptionId, @Strikeprice, @Comment, @Timestamp);
 
                     DECLARE @PrimaryKey INT;
                     SET @PrimaryKey = SCOPE_IDENTITY();

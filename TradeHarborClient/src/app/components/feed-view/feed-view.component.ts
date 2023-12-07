@@ -19,6 +19,7 @@ export class FeedViewComponent {
   private getTradePosts(): void {
     this.apiService.getTradePosts().subscribe(resp => {
       if (!(resp instanceof ErrorViewModel)) {
+        resp.sort((x, y) => new Date(y.timestamp).getTime() - new Date( x.timestamp).getTime());
         this.tradePosts = resp;
       }
     });

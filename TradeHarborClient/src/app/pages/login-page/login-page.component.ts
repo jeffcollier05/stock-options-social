@@ -20,7 +20,7 @@ export class LoginPageComponent {
 
   constructor(private authService: AuthenticationService, private router: Router) {
     // TEMP VALUES FOR DEVELOPMENT
-    this.loginDto.email = 'jeff@gmail.com';
+    this.loginDto.email = 'jeff05@gmaill.com';
     this.loginDto.password = 'Password123!';
   }
 

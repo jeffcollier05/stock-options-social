@@ -1,5 +1,8 @@
 export class Register {
-    name: string = '';
     email: string = '';
+    username: string = '';
     password: string = '';
+    firstName: string = '';
+    lastName: string = '';
+    profilePictureUrl: string = '';
 }

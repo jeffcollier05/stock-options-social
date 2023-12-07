@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Register } from '../models/register';
 import { JwtAuth } from '../models/jwtAuth';
 import { Login } from '../models/login';

@@ -10,6 +10,7 @@ using System.Text;
 using TradeHarborApi.Common;
 using TradeHarborApi.Configuration;
 using TradeHarborApi.Models.Dtos;
+using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Controllers
 {
@@ -20,15 +21,18 @@ namespace TradeHarborApi.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtConfig _jwtConfig;
         private readonly IConfiguration _configuration;
+        private readonly AuthRepository _authRepository;
 
         public AuthManagementController(
             UserManager<IdentityUser> userManager,
             IOptionsMonitor<JwtConfig> _optionsMonitor,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            AuthRepository authRepository)
         {
             _userManager = userManager;
             _jwtConfig = _optionsMonitor.CurrentValue;
             _configuration = configuration;
+            _authRepository = authRepository;
         }
 
         [HttpGet]
@@ -57,24 +61,39 @@ namespace TradeHarborApi.Controllers
                     var newUser = new IdentityUser()
                     {
                         Email = requestDto.Email,
-                        UserName = requestDto.Email
+                        UserName = requestDto.Username
                     };
 
-                    var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
-                    if (isCreated.Succeeded)
+                    var usernameExist = await _userManager.FindByNameAsync(requestDto.Username);
+                    if (usernameExist == null)
                     {
-                        var token = GenerateJwtToken(newUser);
-
-                        return Ok(new RegistrationRequestResponse()
+                        var isCreated = await _userManager.CreateAsync(newUser, requestDto.Password);
+                        if (isCreated.Succeeded)
                         {
-                            Result = true,
-                            Token = token
-                        });
+                            var linkedRequestDto = new LinkedAccountDto()
+                            {
+                                FirstName = requestDto.FirstName,
+                                LastName = requestDto.LastName,
+                                ProfilePictureUrl = requestDto.ProfilePictureUrl,
+                                UserId = newUser.Id
+                            };
+                            await _authRepository.InsertLinkedAccountInformation(linkedRequestDto);
+
+                            var token = await GenerateJwtToken(newUser);
+                            return Ok(new RegistrationRequestResponse()
+                            {
+                                Result = true,
+                                Token = token
+                            });
+                        }
+                        else
+                        {
+                            return BadRequest(error: Constants.REQUEST_FAILED);
+                        }
                     }
                     else
                     {
-                        return BadRequest(error: Constants.REQUEST_FAILED);
-                        //return BadRequest(error: isCreated.Errors.Select(x => x.Description).ToList());
+                        return BadRequest(error: Constants.USERNAME_ALREADY_EXISTS);
                     }
                 }
             }
@@ -96,8 +115,8 @@ namespace TradeHarborApi.Controllers
                     var isPasswordValid = await _userManager.CheckPasswordAsync(existingUser, requestDto.Password);
                     if (isPasswordValid)
                     {
-                        var token = GenerateJwtToken(existingUser);
-                        return Ok(new RegistrationRequestResponse()
+                        var token = await GenerateJwtToken(existingUser);
+                        return Ok(new LoginRequestResponse()
                         {
                             Token = token,
                             Result = true
@@ -119,21 +138,26 @@ namespace TradeHarborApi.Controllers
             }
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        private async Task<string> GenerateJwtToken(IdentityUser user)
         {
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
+            var linkedAccount = await _authRepository.FindLinkedAccountInformation(user.Id);
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(type: JwtRegisteredClaimNames.Iss, value: _configuration.GetSection(key: "JwtConfig:ValidIssuer")?.Value),
                     new Claim(type: JwtRegisteredClaimNames.Aud, value: _configuration.GetSection(key: "JwtConfig:ValidAudience")?.Value),
-                    new Claim(type: "Id", value: user.Id),
-                    new Claim(type: JwtRegisteredClaimNames.Sub, value: user.Email),
+                    new Claim(type: "UserId", value: user.Id),
+                    new Claim(type: JwtRegisteredClaimNames.Sub, value: user.UserName),
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
+                    new Claim(type: "FirstName", value: linkedAccount.FirstName),
+                    new Claim(type: "LastName", value: linkedAccount.LastName),
+                    new Claim(type: "ProfilePictureUrl", value: linkedAccount.ProfilePictureUrl),
+                    new Claim(type: "Username", value: user.UserName),
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
                     algorithm: SecurityAlgorithms.HmacSha256)
             };

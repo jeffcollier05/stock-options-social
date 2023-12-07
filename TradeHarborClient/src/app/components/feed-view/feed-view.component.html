@@ -1,32 +1,34 @@
-<div *ngFor="let post of tradePosts">
-    <div class="post-container">
-        <div class="post-content-wrapper">
-            <div class="post-header-content">
-                <img class="profile-picture" src="{{post.profilePictureUrl}}">
-                <span class="name-span">{{post.firstName}} {{post.lastName}}</span>
-                <span class="username-span">@{{post.username}}</span>
-                <span>&#8226; {{getLapsedTime(post.timestamp)}}</span>
-            </div>
-
-            <div class="post-content">
-                <div class="post-content-column">
-                    <span>Ticker: {{post.ticker}}</span>
-                    <span>Position: {{post.position}}</span>
+<div class="feed-view-container">
+    <div *ngFor="let post of tradePosts">
+        <div class="post-container">
+            <div class="post-content-wrapper">
+                <div class="post-header-content">
+                    <img class="profile-picture" src="{{post.profilePictureUrl}}">
+                    <span class="name-span">{{post.firstName}} {{post.lastName}}</span>
+                    <span class="username-span">@{{post.username}}</span>
+                    <span>&#8226; {{getLapsedTime(post.timestamp)}}</span>
                 </div>
-                <div class="post-content-column">
-                    <span>Strikeprice: {{post.strikeprice}}</span>
-                    <span>Option: {{post.option}}</span>
+    
+                <div class="post-content">
+                    <div class="post-content-column">
+                        <span>Ticker: {{post.ticker}}</span>
+                        <span>Position: {{post.position}}</span>
+                    </div>
+                    <div class="post-content-column">
+                        <span>Strikeprice: {{post.strikeprice}}</span>
+                        <span>Option: {{post.option}}</span>
+                    </div>
                 </div>
+                
+                <div class="comment-container">
+                    <span>Comment: {{post.comment}}</span>
+                </div>
+                
+                <div class="timestamp-container">
+                    <span>{{getDateAndTime(post.timestamp)}}</span>
+                </div>
+    
             </div>
-            
-            <div class="comment-container">
-                <span>Comment: {{post.comment}}</span>
-            </div>
-            
-            <div class="timestamp-container">
-                <span>{{getDateAndTime(post.timestamp)}}</span>
-            </div>
-
         </div>
     </div>
 </div>

@@ -38,7 +38,7 @@ export class FeedViewComponent {
       return `${seconds}s`;
     } else if (minutes < 60) {
       return `${minutes}m`;
-    } else if (hours < 60) {
+    } else if (hours < 24) {
       return `${hours}h`;
     } else {
       return `${days}d`;

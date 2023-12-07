@@ -1,5 +1,43 @@
+@import '../../../styles.scss';
+
+$action-bar-height: 500px;
+
 .action-bar-container {
-    width: 200px;
-    height: 500px;
+    width: $action-bar-width;
+    height: $action-bar-height;
     border: 2px black solid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    right: 0;
+    top: 0;
+    margin-right: 20px;
+    background-color: rgb(216, 240, 216);
+}
+
+.body-wrapper {
+    margin: 30px 0px 0px 0px;
+}
+
+.active-user-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-picture {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.name-span {
+    font-weight: bold;
+}
+
+.username-span {
+    font-weight: bold;
+    color: gray;
 }

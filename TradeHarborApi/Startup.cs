@@ -35,6 +35,7 @@ namespace TradeHarborApi
             services.AddScoped<TradesRepository>();
             services.AddScoped<TradeService>();
             services.AddScoped<AuthService>();
+            services.AddScoped<AuthRepository>();
             services.AddScoped<IApiConfiguration, ApiConfiguration>();
             services.AddControllers();
             services.AddEndpointsApiExplorer();

@@ -54,10 +54,16 @@ namespace TradeHarborApi.Repositories
                         op.[Option],
                         t.Strikeprice,
                         t.Comment,
-                        t.[Timestamp]
+                        t.[Timestamp],
+                        a.FirstName,
+                        a.LastName,
+                        a.ProfilePictureUrl,
+                        u.UserName as Username
                     FROM dbo.trades t
                     JOIN reference.[Option] op on op.Option_id = t.[Option]
                     JOIN reference.[Position] p on p.Position_id = t.Position
+                    JOIN dbo.Accounts a on a.User_id = t.User_id
+                    JOIN dbo.AspNetUsers u on u.Id = t.User_id
                     ";
 
             using var connection = GetSqlConnection();

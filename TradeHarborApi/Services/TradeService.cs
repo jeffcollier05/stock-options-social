@@ -17,6 +17,11 @@ namespace TradeHarborApi.Services
         public async Task<IEnumerable<TradePost>> GetTrades()
         {
             var tradePosts = await _repo.GetTrades();
+            foreach (var post in tradePosts)
+            {
+                post.Timestamp = DateTime.SpecifyKind(post.Timestamp, DateTimeKind.Utc);
+            }
+
             return tradePosts;
         }
 

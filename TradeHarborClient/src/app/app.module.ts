@@ -22,6 +22,13 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+
+const matSnackbarDefaultConfig: MatSnackBarConfig = {
+  verticalPosition: 'bottom',
+  horizontalPosition: 'center',
+  duration: 3000,
+};
 
 @NgModule({
   declarations: [
@@ -47,13 +54,18 @@ import { MatInputModule } from '@angular/material/input';
     CommonModule,
     MatSelectModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatSnackBarModule
   ],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthenticationInterceptor,
       multi: true
+    },
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: matSnackbarDefaultConfig,
     }
   ],
   bootstrap: [AppComponent]

@@ -29,6 +29,13 @@
         <textarea matInput placeholder="Write comment" rows="5" [(ngModel)]="createTradePostRequest.comment"></textarea>
     </mat-form-field>
 
-    <button mat-raised-button color="accent" (click)="createTradePost()">Create Post</button>
+    <button
+        mat-raised-button
+        color="accent"
+        (click)="createTradePost()"
+        [disabled]="createPostWaiting">
+            <span *ngIf="!createPostWaiting">Create Post</span>
+            <mat-spinner *ngIf="createPostWaiting" diameter="30"></mat-spinner>
+    </button>
       
 </div>

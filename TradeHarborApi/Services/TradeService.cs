@@ -29,7 +29,7 @@ namespace TradeHarborApi.Services
         {
             request.UserId = _authService.GetUserIdFromJwt();
             request.Timestamp = DateTime.UtcNow;
-            var asdf = await _tradesRepo.CreateTradePost(request);
+            await _tradesRepo.CreateTradePost(request);
         }
 
         public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
@@ -43,6 +43,18 @@ namespace TradeHarborApi.Services
         {
             var users = await _tradesRepo.GetAllUsers();
             return users;
+        }
+
+        public async Task AddFriend(ModifyFriendPairRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.AddFriend(request.FriendUserId, userId);
+        }
+
+        public async Task RemoveFriend(ModifyFriendPairRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.RemoveFriend(request.FriendUserId, userId);
         }
     }
 }

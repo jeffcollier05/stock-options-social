@@ -29,9 +29,10 @@ namespace TradeHarborApi.Controllers
         }
 
         [HttpPost]
-        public async Task CreateTradePost([FromBody] CreateTradePostRequest request)
+        public async Task<IActionResult> CreateTradePost([FromBody] CreateTradePostRequest request)
         {
             await _tradeService.CreateTradePost(request);
+            return Ok();
         }
 
         [HttpGet]
@@ -46,6 +47,20 @@ namespace TradeHarborApi.Controllers
         {
             var users = await _tradeService.GetAllUsers();
             return users;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFriend([FromBody] ModifyFriendPairRequest request)
+        {
+            await _tradeService.AddFriend(request);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RemoveFriend([FromBody] ModifyFriendPairRequest request)
+        {
+            await _tradeService.RemoveFriend(request);
+            return Ok();
         }
     }
 }

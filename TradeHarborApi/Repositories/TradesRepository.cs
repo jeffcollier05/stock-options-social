@@ -131,5 +131,37 @@ namespace TradeHarborApi.Repositories
             var users = await connection.QueryAsync<FriendProfile>(query);
             return users;
         }
+
+        public async Task RemoveFriend(string user1Id, string user2Id)
+        {
+            var query = @"
+                    DELETE
+                    FROM dbo.FriendPairs
+                    WHERE
+                      (Person1Id = @User1Id AND Person2Id = @User2Id)
+                      OR
+                      (Person1Id = @User2Id AND Person2Id = @User1Id)
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { user1Id, user2Id });
+        }
+
+        public async Task AddFriend(string user1Id, string user2Id)
+        {
+            var query = @"
+                    INSERT INTO [dbo].[FriendPairs]
+                        ([Person1Id]
+                        ,[Person2Id]
+                        ,[PairingDate])
+                     VALUES
+                        (@User1Id,
+                        @User2Id,
+                        GETDATE())
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { user1Id, user2Id });
+        }
     }
 }

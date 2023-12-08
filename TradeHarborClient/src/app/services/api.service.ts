@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { ErrorViewModel } from '../models/errorViewModel';
 import { CreateTradePostRequest } from '../models/createTradePostRequest';
 import { FriendProfile } from '../models/friendProfile';
+import { ModifyFriendPairRequest } from '../models/modifyFriendPairRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,14 @@ export class ApiService {
     return this.httpGet<FriendProfile[]>('trades/GetAllUsers')
   }
 
+  public addFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/AddFriend', request)
+  }
+
+  public removeFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/RemoveFriend', request)
+  }
+ 
   // Wrapper for GET requests
   httpGet<T>(endpoint: string): Observable<T | ErrorViewModel> {
     const url = `${environment.apiUrl}/${endpoint}`;

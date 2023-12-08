@@ -9,7 +9,7 @@
                         <span class="username-span">&commat;{{friend.username}}</span>
                         <span class="name-span">{{friend.firstName}} {{friend.lastName}}</span>
                     </div>
-                    <button mat-raised-button color="warn">Remove friend</button>
+                    <button mat-raised-button color="warn" (click)="removeFriend(friend.userId)">Remove friend</button>
                 </div>
             </div>
         </mat-tab>
@@ -22,7 +22,7 @@
                         <span class="username-span">&commat;{{user.username}}</span>
                         <span class="name-span">{{user.firstName}} {{user.lastName}}</span>
                     </div>
-                    <button mat-raised-button color="accent">Add friend</button>
+                    <button *ngIf="!isUserMyFriend(user.userId)" mat-raised-button color="accent" (click)="addFriend(user.userId)">Add friend</button>
                 </div>
             </div>
         </mat-tab>

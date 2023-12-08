@@ -16,7 +16,8 @@ namespace TradeHarborApi.Services
 
         public async Task<IEnumerable<TradePost>> GetTrades()
         {
-            var tradePosts = await _tradesRepo.GetTrades();
+            var userId = _authService.GetUserIdFromJwt();
+            var tradePosts = await _tradesRepo.GetTrades(userId);
             foreach (var post in tradePosts)
             {
                 post.Timestamp = DateTime.SpecifyKind(post.Timestamp, DateTimeKind.Utc);

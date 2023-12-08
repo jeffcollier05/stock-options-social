@@ -26,7 +26,7 @@ namespace TradeHarborApi.Repositories
             return connection;
         }
 
-        public async Task<IEnumerable<TradePost>> GetTrades()
+        public async Task<IEnumerable<TradePost>> GetTrades(string userId)
         {
             //var query = @"
             //        SELECT 
@@ -47,8 +47,39 @@ namespace TradeHarborApi.Repositories
             //        JOIN dbo.[Accounts] a on a.User_id = t.User_id
             //        ";
 
+            //var query = @"
+            //        SELECT 
+            //            t.Ticker,
+            //            p.Position,
+            //            op.[Option],
+            //            t.Strikeprice,
+            //            t.Comment,
+            //            t.[Timestamp],
+            //            a.FirstName,
+            //            a.LastName,
+            //            a.ProfilePictureUrl,
+            //            u.UserName as Username
+            //        FROM dbo.trades t
+            //        JOIN reference.[Option] op on op.Option_id = t.[Option]
+            //        JOIN reference.[Position] p on p.Position_id = t.Position
+            //        JOIN dbo.Accounts a on a.User_id = t.User_id
+            //        JOIN dbo.AspNetUsers u on u.Id = t.User_id
+            //        ";
+
             var query = @"
-                    SELECT 
+                        WITH FriendIDs AS (
+                            SELECT Person2Id AS 'Id'
+                            FROM dbo.friendpairs
+                            WHERE Person1Id = @UserId
+                            UNION
+                            SELECT Person1Id AS 'Id'
+                            FROM dbo.friendpairs
+                            WHERE Person2Id = @UserId
+                            UNION
+                            SELECT @UserId
+                        )                    
+
+                        SELECT 
                         t.Ticker,
                         p.Position,
                         op.[Option],
@@ -64,10 +95,11 @@ namespace TradeHarborApi.Repositories
                     JOIN reference.[Position] p on p.Position_id = t.Position
                     JOIN dbo.Accounts a on a.User_id = t.User_id
                     JOIN dbo.AspNetUsers u on u.Id = t.User_id
+                    WHERE u.Id IN (SELECT Id FROM FriendIDs)
                     ";
 
             using var connection = GetSqlConnection();
-            var tradePosts = await connection.QueryAsync<TradePost>(query);
+            var tradePosts = await connection.QueryAsync<TradePost>(query, new { userId });
             return tradePosts;
         }
 

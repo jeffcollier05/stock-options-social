@@ -5,6 +5,7 @@ import { Observable, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorViewModel } from '../models/errorViewModel';
 import { CreateTradePostRequest } from '../models/createTradePostRequest';
+import { FriendProfile } from '../models/friendProfile';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,14 @@ export class ApiService {
 
   public createTradePost(request: CreateTradePostRequest): Observable<void | ErrorViewModel> {
     return this.httpPost<void>('trades/CreateTradePost', request)
+  }
+
+  public getFriendsForUser(): Observable<FriendProfile[] | ErrorViewModel> {
+    return this.httpGet<FriendProfile[]>('trades/GetFriendsForUser')
+  }
+
+  public getAllUsers(): Observable<FriendProfile[] | ErrorViewModel> {
+    return this.httpGet<FriendProfile[]>('trades/GetAllUsers')
   }
 
   // Wrapper for GET requests

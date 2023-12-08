@@ -23,6 +23,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarConfig, MatSnackBarModule } from '@angular/material/snack-bar';
+import { FriendsDialogComponent } from './components/friends-dialog/friends-dialog.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 const matSnackbarDefaultConfig: MatSnackBarConfig = {
   verticalPosition: 'bottom',
@@ -40,6 +42,7 @@ const matSnackbarDefaultConfig: MatSnackBarConfig = {
     RegisterPageComponent,
     ActionBarComponent,
     CreatePostDialogComponent,
+    FriendsDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +58,8 @@ const matSnackbarDefaultConfig: MatSnackBarConfig = {
     MatSelectModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatTabsModule
   ],
   providers: [
     {

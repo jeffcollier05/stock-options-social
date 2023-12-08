@@ -1,0 +1,30 @@
+.dialog-container {
+    width: 500px;
+    height: 500px;
+}
+
+.profile-picture {
+    height: 50px;
+    width: 50px;
+    border-radius: 100%;
+}
+
+.friend-container {
+    display: flex;
+}
+
+.name-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px 0px 0px 10px;
+}
+
+.name-span {
+    font-weight: bold;
+}
+
+.username-span {
+    font-weight: bold;
+    color: gray;
+}

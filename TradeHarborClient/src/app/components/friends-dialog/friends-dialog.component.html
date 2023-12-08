@@ -1,0 +1,31 @@
+<div class="dialog-container">
+    <mat-tab-group>
+        
+        <mat-tab label="Friends">
+            <div *ngFor="let friend of friendProfiles">
+                <div class="friend-container">
+                    <img class="profile-picture" src="{{friend.profilePictureUrl}}">
+                    <div class="name-container">
+                        <span class="username-span">&commat;{{friend.username}}</span>
+                        <span class="name-span">{{friend.firstName}} {{friend.lastName}}</span>
+                    </div>
+                    <button mat-raised-button color="warn">Remove friend</button>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Search People">
+            <div *ngFor="let user of users">
+                <div class="friend-container">
+                    <img class="profile-picture" src="{{user.profilePictureUrl}}">
+                    <div class="name-container">
+                        <span class="username-span">&commat;{{user.username}}</span>
+                        <span class="name-span">{{user.firstName}} {{user.lastName}}</span>
+                    </div>
+                    <button mat-raised-button color="accent">Add friend</button>
+                </div>
+            </div>
+        </mat-tab>
+
+    </mat-tab-group>
+</div>

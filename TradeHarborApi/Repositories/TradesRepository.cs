@@ -94,5 +94,42 @@ namespace TradeHarborApi.Repositories
             var tradePosts = await connection.QueryAsync<object>(query, request);
             return tradePosts;
         }
+
+        public async Task<IEnumerable<FriendProfile>> GetFriendsForUser(string userId)
+        {
+            var query = @"
+                    WITH FriendIDs AS (
+                        SELECT Person2Id AS 'Id'
+                        FROM dbo.friendpairs
+                        WHERE Person1Id = @UserId
+                        UNION
+                        SELECT Person1Id AS 'Id'
+                        FROM dbo.friendpairs
+                        WHERE Person2Id = @UserId
+                    )
+
+                    SELECT f.Id as 'UserId', a.FirstName, a.LastName, a.ProfilePictureUrl, u.UserName
+                    FROM FriendIDs f
+                    JOIN dbo.Accounts a ON a.User_id = f.Id
+                    JOIN dbo.AspNetUsers u on u.Id = f.Id
+                    ;";
+
+            using var connection = GetSqlConnection();
+            var friends = await connection.QueryAsync<FriendProfile>(query, new { userId });
+            return friends;
+        }
+
+        public async Task<IEnumerable<FriendProfile>> GetAllUsers()
+        {
+            var query = @"
+                    SELECT u.Id as 'UserId', u.UserName, ac.FirstName, ac.LastName, ac.ProfilePictureUrl
+                    FROM dbo.AspNetUsers u
+                    JOIN dbo.Accounts ac on ac.User_id = u.Id
+                    ;";
+
+            using var connection = GetSqlConnection();
+            var users = await connection.QueryAsync<FriendProfile>(query);
+            return users;
+        }
     }
 }

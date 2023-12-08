@@ -1,9 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using TradeHarborApi.Data;
 using TradeHarborApi.Models;
 using TradeHarborApi.Services;
 
@@ -35,6 +32,20 @@ namespace TradeHarborApi.Controllers
         public async Task CreateTradePost([FromBody] CreateTradePostRequest request)
         {
             await _tradeService.CreateTradePost(request);
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
+        {
+            var friends = await _tradeService.GetFriendsForUser();
+            return friends;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<FriendProfile>> GetAllUsers()
+        {
+            var users = await _tradeService.GetAllUsers();
+            return users;
         }
     }
 }

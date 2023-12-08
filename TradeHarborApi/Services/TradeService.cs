@@ -5,18 +5,18 @@ namespace TradeHarborApi.Services
 {
     public class TradeService
     {
-        private readonly TradesRepository _repo;
+        private readonly TradesRepository _tradesRepo;
         private readonly AuthService _authService;
 
-        public TradeService(TradesRepository repo, AuthService authService)
+        public TradeService(TradesRepository tradesRepo, AuthService authService)
         {
-            _repo = repo;
+            _tradesRepo = tradesRepo;
             _authService = authService;
         }
 
         public async Task<IEnumerable<TradePost>> GetTrades()
         {
-            var tradePosts = await _repo.GetTrades();
+            var tradePosts = await _tradesRepo.GetTrades();
             foreach (var post in tradePosts)
             {
                 post.Timestamp = DateTime.SpecifyKind(post.Timestamp, DateTimeKind.Utc);
@@ -29,7 +29,20 @@ namespace TradeHarborApi.Services
         {
             request.UserId = _authService.GetUserIdFromJwt();
             request.Timestamp = DateTime.UtcNow;
-            var asdf = await _repo.CreateTradePost(request);
+            var asdf = await _tradesRepo.CreateTradePost(request);
+        }
+
+        public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            var friends = await _tradesRepo.GetFriendsForUser(userId);
+            return friends;
+        }
+
+        public async Task<IEnumerable<FriendProfile>> GetAllUsers()
+        {
+            var users = await _tradesRepo.GetAllUsers();
+            return users;
         }
     }
 }

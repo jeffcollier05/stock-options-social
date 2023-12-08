@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using TradeHarborApi.Common;
 using TradeHarborApi.Configuration;
 using TradeHarborApi.Models.Dtos;
 using TradeHarborApi.Repositories;
+using TradeHarborApi.Services;
 
 namespace TradeHarborApi.Controllers
 {
@@ -19,31 +14,17 @@ namespace TradeHarborApi.Controllers
     public class AuthManagementController : ControllerBase
     {
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly JwtConfig _jwtConfig;
-        private readonly IConfiguration _configuration;
         private readonly AuthRepository _authRepository;
+        private readonly AuthService _authService;
 
         public AuthManagementController(
             UserManager<IdentityUser> userManager,
-            IOptionsMonitor<JwtConfig> _optionsMonitor,
-            IConfiguration configuration,
-            AuthRepository authRepository)
+            AuthRepository authRepository,
+            AuthService authService)
         {
             _userManager = userManager;
-            _jwtConfig = _optionsMonitor.CurrentValue;
-            _configuration = configuration;
             _authRepository = authRepository;
-        }
-
-        [HttpGet]
-        [Authorize]
-        public ActionResult<string> GetEmail()
-        {
-            var allClaims = User?.Claims.Select(c => new { c.Type, c.Value });
-            var email = User?.Claims
-                .Select(c => new { c.Type, c.Value })
-                .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Email);
-            return Ok(new { allClaims, email });
+            _authService = authService;
         }
 
         [HttpPost]
@@ -79,7 +60,7 @@ namespace TradeHarborApi.Controllers
                             };
                             await _authRepository.InsertLinkedAccountInformation(linkedRequestDto);
 
-                            var token = await GenerateJwtToken(newUser);
+                            var token = await _authService.GenerateJwtToken(newUser);
                             return Ok(new RegistrationRequestResponse()
                             {
                                 Result = true,
@@ -115,7 +96,7 @@ namespace TradeHarborApi.Controllers
                     var isPasswordValid = await _userManager.CheckPasswordAsync(existingUser, requestDto.Password);
                     if (isPasswordValid)
                     {
-                        var token = await GenerateJwtToken(existingUser);
+                        var token = await _authService.GenerateJwtToken(existingUser);
                         return Ok(new LoginRequestResponse()
                         {
                             Token = token,
@@ -136,36 +117,6 @@ namespace TradeHarborApi.Controllers
             {
                 return BadRequest(error: Constants.INCOMPLETE_REQUEST);
             }
-        }
-
-        private async Task<string> GenerateJwtToken(IdentityUser user)
-        {
-            var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
-            var linkedAccount = await _authRepository.FindLinkedAccountInformation(user.Id);
-            var tokenDescriptor = new SecurityTokenDescriptor()
-            {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim(type: JwtRegisteredClaimNames.Iss, value: _configuration.GetSection(key: "JwtConfig:ValidIssuer")?.Value),
-                    new Claim(type: JwtRegisteredClaimNames.Aud, value: _configuration.GetSection(key: "JwtConfig:ValidAudience")?.Value),
-                    new Claim(type: Constants.CLAIM_ID, value: user.Id),
-                    new Claim(type: JwtRegisteredClaimNames.Sub, value: user.UserName),
-                    new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
-                    new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
-                    new Claim(type: "FirstName", value: linkedAccount.FirstName),
-                    new Claim(type: "LastName", value: linkedAccount.LastName),
-                    new Claim(type: "ProfilePictureUrl", value: linkedAccount.ProfilePictureUrl),
-                    new Claim(type: "Username", value: user.UserName),
-                }),
-                Expires = DateTime.UtcNow.AddMinutes(60),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
-                    algorithm: SecurityAlgorithms.HmacSha256)
-            };
-
-            var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var token = jwtTokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = jwtTokenHandler.WriteToken(token);
-            return jwtToken;
         }
     }
 }

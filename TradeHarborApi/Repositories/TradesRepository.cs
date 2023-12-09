@@ -59,7 +59,9 @@ namespace TradeHarborApi.Repositories
                     JOIN reference.[Position] p on p.Position_id = t.Position
                     JOIN dbo.Accounts a on a.User_id = t.User_id
                     JOIN dbo.AspNetUsers u on u.Id = t.User_id
-                    WHERE u.Id IN (SELECT Id FROM FriendIDs)
+                    WHERE
+                        u.Id IN (SELECT Id FROM FriendIDs)
+                        AND t.IsActive = 1
                     ";
 
             using var connection = GetSqlConnection();
@@ -70,8 +72,8 @@ namespace TradeHarborApi.Repositories
         public async Task DeleteTradePost(DeleteTradePostRequest request, string userId)
         {
             var query = @"
-                    DELETE
-                    FROM dbo.Trades
+                    UPDATE dbo.Trades
+                    SET IsActive = 0
                     WHERE Trade_id = @TradeId AND User_id = @UserId
                     ;";
 
@@ -89,8 +91,8 @@ namespace TradeHarborApi.Repositories
                     SET @OptionId = (select Option_id from reference.[Option] where [Option] = @Option); 
 
                     INSERT INTO [dbo].[Trades]
-                        ([User_id], [Ticker], [Position], [Option], [Strikeprice], [Comment], [Timestamp])
-                    VALUES (@UserId, @Ticker, @PositionId, @OptionId, @Strikeprice, @Comment, @Timestamp);
+                        ([User_id], [Ticker], [Position], [Option], [Strikeprice], [Comment], [Timestamp], [IsActive])
+                    VALUES (@UserId, @Ticker, @PositionId, @OptionId, @Strikeprice, @Comment, @Timestamp, 1);
 
                     DECLARE @PrimaryKey INT;
                     SET @PrimaryKey = SCOPE_IDENTITY();

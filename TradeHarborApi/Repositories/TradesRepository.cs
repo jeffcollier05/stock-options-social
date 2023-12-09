@@ -28,44 +28,6 @@ namespace TradeHarborApi.Repositories
 
         public async Task<IEnumerable<TradePost>> GetTrades(string userId)
         {
-            //var query = @"
-            //        SELECT 
-            //            t.[User_id] as UserId,
-            //            t.Ticker,
-            //            p.Position,
-            //            op.[Option],
-            //            t.Strikeprice,
-            //            t.Comment,
-            //            t.[Timestamp],
-            //            a.FirstName,
-            //            a.LastName,
-            //            a.Username,
-            //            a.ProfilePictureUrl
-            //        FROM dbo.trades t
-            //        JOIN reference.[Option] op on op.Option_id = t.[Option]
-            //        JOIN reference.[Position] p on p.Position_id = t.Position
-            //        JOIN dbo.[Accounts] a on a.User_id = t.User_id
-            //        ";
-
-            //var query = @"
-            //        SELECT 
-            //            t.Ticker,
-            //            p.Position,
-            //            op.[Option],
-            //            t.Strikeprice,
-            //            t.Comment,
-            //            t.[Timestamp],
-            //            a.FirstName,
-            //            a.LastName,
-            //            a.ProfilePictureUrl,
-            //            u.UserName as Username
-            //        FROM dbo.trades t
-            //        JOIN reference.[Option] op on op.Option_id = t.[Option]
-            //        JOIN reference.[Position] p on p.Position_id = t.Position
-            //        JOIN dbo.Accounts a on a.User_id = t.User_id
-            //        JOIN dbo.AspNetUsers u on u.Id = t.User_id
-            //        ";
-
             var query = @"
                         WITH FriendIDs AS (
                             SELECT Person2Id AS 'Id'
@@ -86,6 +48,8 @@ namespace TradeHarborApi.Repositories
                         t.Strikeprice,
                         t.Comment,
                         t.[Timestamp],
+                        t.User_id AS 'UserId',
+                        t.Trade_id AS 'TradeId',
                         a.FirstName,
                         a.LastName,
                         a.ProfilePictureUrl,
@@ -101,6 +65,18 @@ namespace TradeHarborApi.Repositories
             using var connection = GetSqlConnection();
             var tradePosts = await connection.QueryAsync<TradePost>(query, new { userId });
             return tradePosts;
+        }
+
+        public async Task DeleteTradePost(DeleteTradePostRequest request, string userId)
+        {
+            var query = @"
+                    DELETE
+                    FROM dbo.Trades
+                    WHERE Trade_id = @TradeId AND User_id = @UserId
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { request.TradeId, userId});
         }
 
         public async Task<object> CreateTradePost(CreateTradePostRequest request)

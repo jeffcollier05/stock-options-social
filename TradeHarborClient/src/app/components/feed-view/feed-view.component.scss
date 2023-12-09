@@ -13,12 +13,13 @@
     margin: 0px 0px 20px 0px;
     border: 2px black solid;
     width: 500px;
+    position: relative;
 }
 
 .post-content-wrapper {
     display: flex;
     flex-direction: column;
-    padding: 10px;
+    padding: 20px;
 }
 
 .profile-picture {
@@ -31,6 +32,7 @@
     display: flex;
     justify-content: left;
     align-items: center;
+    margin-bottom: 20px;
 
     span {
         padding-left: 8px;
@@ -69,4 +71,10 @@
         color: gray;
         font-weight: bold;
     }
+}
+
+.delete-button {
+    position: absolute;
+    top: 0;
+    right: 0;
 }

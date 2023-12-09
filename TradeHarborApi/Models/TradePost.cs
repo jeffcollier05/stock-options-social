@@ -4,6 +4,8 @@
     {
         public string UserId { get; set; }
 
+        public string TradeId { get; set; }
+
         public string Ticker { get; set; }
 
         public string Position { get; set; }

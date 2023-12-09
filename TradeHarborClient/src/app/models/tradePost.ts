@@ -1,5 +1,6 @@
 export class TradePost {
     userId: string = '';
+    tradeId: string = '';
     ticker: string = '';
     position: string = '';
     option: string = '';

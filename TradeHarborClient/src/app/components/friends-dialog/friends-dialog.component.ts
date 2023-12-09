@@ -5,6 +5,7 @@ import { ErrorViewModel } from 'src/app/models/errorViewModel';
 import { FriendProfile } from 'src/app/models/friendProfile';
 import { ModifyFriendPairRequest } from 'src/app/models/modifyFriendPairRequest';
 import { ApiService } from 'src/app/services/api.service';
+import { AuthenticationService } from 'src/app/services/authentication.services';
 
 @Component({
   selector: 'app-friends-dialog',
@@ -18,7 +19,8 @@ export class FriendsDialogComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private snackbar: MatSnackBar) { }
+    private snackbar: MatSnackBar,
+    private authService: AuthenticationService) { }
 
   ngOnInit(): void {
     this.apiService.getFriendsForUser().subscribe(resp => {
@@ -29,23 +31,13 @@ export class FriendsDialogComponent implements OnInit {
 
     this.apiService.getAllUsers().subscribe(resp => {
       if (!(resp instanceof ErrorViewModel)) {
-        var userId = this.getUserIdFromJwt();
+        var userId = this.authService.getUserIdFromJwt();
         var otherUsers = resp.filter(x => x.userId != userId);
         this.users = otherUsers;
       }
     });
   }
-
-  private getUserIdFromJwt(): string {
-    var userId = '';
-    const token = localStorage.getItem('jwtToken');
-    if (token) {
-      var decodedToken: any = jwtDecode(token);
-      userId = decodedToken.UserId;  
-    }
-    return userId;
-  }
-
+  
   public removeFriend(userId: string): void {
     var request: ModifyFriendPairRequest = {
       friendUserId: userId

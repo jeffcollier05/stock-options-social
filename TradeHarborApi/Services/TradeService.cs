@@ -33,6 +33,12 @@ namespace TradeHarborApi.Services
             await _tradesRepo.CreateTradePost(request);
         }
 
+        public async Task DeleteTradePost(DeleteTradePostRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.DeleteTradePost(request, userId);
+        }
+
         public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
         {
             var userId = _authService.GetUserIdFromJwt();

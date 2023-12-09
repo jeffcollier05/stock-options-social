@@ -7,6 +7,7 @@ import { ErrorViewModel } from '../models/errorViewModel';
 import { CreateTradePostRequest } from '../models/createTradePostRequest';
 import { FriendProfile } from '../models/friendProfile';
 import { ModifyFriendPairRequest } from '../models/modifyFriendPairRequest';
+import { DeleteTradePostRequest } from '../models/deleteTradePostRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class ApiService {
 
   public createTradePost(request: CreateTradePostRequest): Observable<void | ErrorViewModel> {
     return this.httpPost<void>('trades/CreateTradePost', request)
+  }
+
+  public deleteTradePost(request: DeleteTradePostRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/DeleteTradePost', request)
   }
 
   public getFriendsForUser(): Observable<FriendProfile[] | ErrorViewModel> {

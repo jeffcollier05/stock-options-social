@@ -35,6 +35,13 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> DeleteTradePost([FromBody] DeleteTradePostRequest request)
+        {
+            await _tradeService.DeleteTradePost(request);
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
         {

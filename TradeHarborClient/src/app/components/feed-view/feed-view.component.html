@@ -1,34 +1,44 @@
 <div class="feed-view-container">
-    <div *ngFor="let post of tradePosts">
+    <div *ngFor="let view of tradePosts">
         <div class="post-container">
             <div class="post-content-wrapper">
                 <div class="post-header-content">
-                    <img class="profile-picture" src="{{post.profilePictureUrl}}">
-                    <span class="name-span">{{post.firstName}} {{post.lastName}}</span>
-                    <span class="username-span">&commat;{{post.username}}</span>
-                    <span>&#8226; {{getLapsedTime(post.timestamp)}}</span>
+                    <img class="profile-picture" src="{{view.tradePost.profilePictureUrl}}">
+                    <span class="name-span">{{view.tradePost.firstName}} {{view.tradePost.lastName}}</span>
+                    <span class="username-span">&commat;{{view.tradePost.username}}</span>
+                    <span>&#8226; {{getLapsedTime(view.tradePost.timestamp)}}</span>
                 </div>
     
                 <div class="post-content">
                     <div class="post-content-column">
-                        <span>Ticker: {{post.ticker}}</span>
-                        <span>Position: {{post.position}}</span>
+                        <span>Ticker: {{view.tradePost.ticker}}</span>
+                        <span>Position: {{view.tradePost.position}}</span>
                     </div>
                     <div class="post-content-column">
-                        <span>Strikeprice: {{post.strikeprice}}</span>
-                        <span>Option: {{post.option}}</span>
+                        <span>Strikeprice: {{view.tradePost.strikeprice}}</span>
+                        <span>Option: {{view.tradePost.option}}</span>
                     </div>
                 </div>
                 
                 <div class="comment-container">
-                    <span>Comment: {{post.comment}}</span>
+                    <span>Comment: {{view.tradePost.comment}}</span>
                 </div>
                 
                 <div class="timestamp-container">
-                    <span>{{getDateAndTime(post.timestamp)}}</span>
+                    <span>{{getDateAndTime(view.tradePost.timestamp)}}</span>
                 </div>
     
             </div>
+            <button
+                mat-raised-button color="warn"
+                (click)="deleteTradePost(view)"
+                *ngIf="isUserPost(view.tradePost)"
+                class="delete-button"
+                [disabled]="view.deleteWaiting"
+            >
+                <span *ngIf="!view.deleteWaiting">X</span>
+                <mat-spinner *ngIf="view.deleteWaiting" diameter="30"></mat-spinner>
+            </button>
         </div>
     </div>
 </div>

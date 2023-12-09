@@ -173,5 +173,50 @@ namespace TradeHarborApi.Repositories
             using var connection = GetSqlConnection();
             await connection.QueryAsync(query, new { user1Id, user2Id });
         }
+
+        public async Task CreateNotification(CreateNotificationRequest request)
+        {
+            var query = @"
+                    INSERT INTO [dbo].[Notifications]
+                        ([UserId]
+                        ,[Message]
+                        ,[CreatedTimestamp]
+                        ,[IsActive])
+                     VALUES
+                        (@UserId,
+                        @Message,
+                        @CreatedTimestamp,
+                        1)
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, request);
+        }
+
+        public async Task<IEnumerable<Notification>> GetNotifications(string userId)
+        {
+            var query = @"
+                    SELECT Message, CreatedTimestamp, NotificationId
+                    FROM dbo.Notifications
+                    WHERE UserId = @UserId
+                        AND IsActive = 1
+                    ;";
+
+            using var connection = GetSqlConnection();
+            var notifications = await connection.QueryAsync<Notification>(query, new { userId });
+            return notifications;
+        }
+
+        public async Task DeleteNotification(DeleteNotificationRequest request, string userId)
+        {
+            var query = @"
+                    UPDATE dbo.Notifications
+                    SET IsActive = 0
+                    WHERE NotificationId = @NotificationId AND UserId = @UserId
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { request.NotificationId, userId });
+        }
     }
 }

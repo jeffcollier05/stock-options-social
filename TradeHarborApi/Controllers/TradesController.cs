@@ -69,5 +69,12 @@ namespace TradeHarborApi.Controllers
             await _tradeService.RemoveFriend(request);
             return Ok();
         }
+
+        [HttpGet]
+        public async Task<IEnumerable<Notification>> GetNotifications()
+        {
+            var notifications = await _tradeService.GetNotifications();
+            return notifications;
+        }
     }
 }

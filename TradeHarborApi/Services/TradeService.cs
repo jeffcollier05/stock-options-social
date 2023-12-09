@@ -56,12 +56,29 @@ namespace TradeHarborApi.Services
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.AddFriend(request.FriendUserId, userId);
+
+            //temp VV
+            var notification = new CreateNotificationRequest
+            {
+                UserId = _authService.GetUserIdFromJwt(),
+                Message = "Test notification 1.",
+                CreatedTimestamp = DateTime.UtcNow
+            };
+            await _tradesRepo.CreateNotification(notification);
+            // test code ^^^
         }
 
         public async Task RemoveFriend(ModifyFriendPairRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.RemoveFriend(request.FriendUserId, userId);
+        }
+
+        public async Task<IEnumerable<Notification>> GetNotifications()
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            var notifications = await _tradesRepo.GetNotifications(userId);
+            return notifications;
         }
     }
 }

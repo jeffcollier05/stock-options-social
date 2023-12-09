@@ -21,11 +21,15 @@
             </div>
             <span>Messages</span>
         </button>
-        <button class="menu-button">
+        <button class="menu-button" (click)="openNotificationsDialog()">
             <div class="menu-icon-wrapper">
                 <mat-icon>notifications</mat-icon>
             </div>
-            <span>Notifications</span>
+            <span
+                [matBadge]="notifications.length"
+                matBadgeOverlap="false"
+                [matBadgeHidden]="notifications.length == 0 ? 'true' : 'false'"
+            >Notifications</span>
         </button>
         <button class="menu-button" (click)="openFriendsDialog()">
             <div class="menu-icon-wrapper">

@@ -8,6 +8,7 @@ import { CreateTradePostRequest } from '../models/createTradePostRequest';
 import { FriendProfile } from '../models/friendProfile';
 import { ModifyFriendPairRequest } from '../models/modifyFriendPairRequest';
 import { DeleteTradePostRequest } from '../models/deleteTradePostRequest';
+import { Notification } from 'src/app/models/notification';
 
 @Injectable({
   providedIn: 'root'
@@ -16,31 +17,35 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   public getTradePosts(): Observable<TradePost[] | ErrorViewModel> {
-    return this.httpGet<TradePost[]>('trades/gettrades')
+    return this.httpGet<TradePost[]>('trades/gettrades');
   }
 
   public createTradePost(request: CreateTradePostRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/CreateTradePost', request)
+    return this.httpPost<void>('trades/CreateTradePost', request);
   }
 
   public deleteTradePost(request: DeleteTradePostRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/DeleteTradePost', request)
+    return this.httpPost<void>('trades/DeleteTradePost', request);
   }
 
   public getFriendsForUser(): Observable<FriendProfile[] | ErrorViewModel> {
-    return this.httpGet<FriendProfile[]>('trades/GetFriendsForUser')
+    return this.httpGet<FriendProfile[]>('trades/GetFriendsForUser');
   }
 
   public getAllUsers(): Observable<FriendProfile[] | ErrorViewModel> {
-    return this.httpGet<FriendProfile[]>('trades/GetAllUsers')
+    return this.httpGet<FriendProfile[]>('trades/GetAllUsers');
   }
 
   public addFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/AddFriend', request)
+    return this.httpPost<void>('trades/AddFriend', request);
   }
 
   public removeFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/RemoveFriend', request)
+    return this.httpPost<void>('trades/RemoveFriend', request);
+  }
+
+  public getNotifications(): Observable<Notification[] | ErrorViewModel> {
+    return this.httpGet<Notification[]>('trades/GetNotifications');
   }
  
   // Wrapper for GET requests

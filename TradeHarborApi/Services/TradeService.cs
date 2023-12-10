@@ -1,4 +1,5 @@
-﻿using TradeHarborApi.Models;
+﻿using Azure.Core;
+using TradeHarborApi.Models;
 using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Services
@@ -46,27 +47,28 @@ namespace TradeHarborApi.Services
             return friends;
         }
 
-        public async Task<IEnumerable<FriendProfile>> GetAllUsers()
+        public async Task<IEnumerable<UserProfile>> GetAllUsers()
         {
-            var users = await _tradesRepo.GetAllUsers();
+            var userId = _authService.GetUserIdFromJwt();
+            var users = await _tradesRepo.GetAllUsers(userId);
             return users;
         }
 
-        public async Task AddFriend(ModifyFriendPairRequest request)
-        {
-            var userId = _authService.GetUserIdFromJwt();
-            await _tradesRepo.AddFriend(request.FriendUserId, userId);
+        //public async Task AddFriend(ModifyFriendPairRequest request)
+        //{
+        //    var userId = _authService.GetUserIdFromJwt();
+        //    await _tradesRepo.AddFriend(request.FriendUserId, userId);
 
-            //temp VV
-            var notification = new CreateNotificationRequest
-            {
-                UserId = _authService.GetUserIdFromJwt(),
-                Message = "Test notification 1.",
-                CreatedTimestamp = DateTime.UtcNow
-            };
-            await _tradesRepo.CreateNotification(notification);
-            // test code ^^^
-        }
+        //    //temp VV
+        //    var notification = new CreateNotificationRequest
+        //    {
+        //        UserId = _authService.GetUserIdFromJwt(),
+        //        Message = "Test notification 1.",
+        //        CreatedTimestamp = DateTime.UtcNow
+        //    };
+        //    await _tradesRepo.CreateNotification(notification);
+        //    // test code ^^^
+        //}
 
         public async Task RemoveFriend(ModifyFriendPairRequest request)
         {
@@ -79,6 +81,39 @@ namespace TradeHarborApi.Services
             var userId = _authService.GetUserIdFromJwt();
             var notifications = await _tradesRepo.GetNotifications(userId);
             return notifications;
+        }
+
+        public async Task DeleteNotification(DeleteNotificationRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.DeleteNotification(request, userId);
+        }
+
+        public async Task CreateFriendRequest(CreateFriendRequestRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.CreateFriendRequest(userId, request, DateTime.UtcNow);
+        }
+
+        public async Task AcceptFriendRequest(AcceptFriendRequestRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.AcceptFriendRequest(request.RequesterUserId, userId);
+
+            // Notify requester that the user accepted their friend request
+            await NotifyFriendRequestAccpeted(request.RequesterUserId);
+        }
+
+        private async Task NotifyFriendRequestAccpeted(string requesterUserId)
+        {
+            var profile = _authService.GetUserProfileFromJwt();
+            var notification = new CreateNotificationRequest
+            {
+                UserId = requesterUserId,
+                Message = $"{profile.Username} has accepted your friend request.",
+                CreatedTimestamp = DateTime.UtcNow
+            };
+            await _tradesRepo.CreateNotification(notification);
         }
     }
 }

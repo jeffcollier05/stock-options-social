@@ -129,16 +129,47 @@ namespace TradeHarborApi.Repositories
             return friends;
         }
 
-        public async Task<IEnumerable<FriendProfile>> GetAllUsers()
+        public async Task<IEnumerable<UserProfile>> GetAllUsers(string userId)
         {
             var query = @"
-                    SELECT u.Id as 'UserId', u.UserName, ac.FirstName, ac.LastName, ac.ProfilePictureUrl
-                    FROM dbo.AspNetUsers u
-                    JOIN dbo.Accounts ac on ac.User_id = u.Id
+                    SELECT 
+	                     u.Id as 'UserId',
+	                     u.UserName,
+	                     ac.FirstName,
+	                     ac.LastName,
+	                     ac.ProfilePictureUrl,
+	                     CASE
+                            WHEN EXISTS (
+                                SELECT 1 
+                                FROM dbo.FriendPairs F 
+                                WHERE f.Person1Id = u.Id AND F.Person2Id = @UserId
+                                   OR F.Person2Id = u.Id AND F.Person1Id = @UserId
+                            ) THEN 1
+                            ELSE 0
+                        END AS IsFriend,
+	                    CASE
+                            WHEN EXISTS (
+                                SELECT 1 
+                                FROM dbo.FriendRequests fr
+                                WHERE fr.RequesterUserId = u.Id AND fr.ReceiverUserId = @UserId
+                            ) THEN 1
+                            ELSE 0
+                        END AS SentFriendRequestToYou,
+	                    CASE
+                            WHEN EXISTS (
+                                SELECT 1 
+                                FROM dbo.FriendRequests fr
+                                WHERE fr.ReceiverUserId = u.Id AND fr.RequesterUserId = @UserId
+                            ) THEN 1
+                            ELSE 0
+                        END AS ReceivedFriendRequestFromYou
+                     FROM dbo.AspNetUsers u
+                     JOIN dbo.Accounts ac on ac.User_id = u.Id
+                     WHERE u.Id <> @UserId;
                     ;";
 
             using var connection = GetSqlConnection();
-            var users = await connection.QueryAsync<FriendProfile>(query);
+            var users = await connection.QueryAsync<UserProfile>(query, new { userId });
             return users;
         }
 
@@ -157,7 +188,7 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { user1Id, user2Id });
         }
 
-        public async Task AddFriend(string user1Id, string user2Id)
+        public async Task AddFriend(string requesterUserId, string receiverUserId)
         {
             var query = @"
                     INSERT INTO [dbo].[FriendPairs]
@@ -165,13 +196,13 @@ namespace TradeHarborApi.Repositories
                         ,[Person2Id]
                         ,[PairingDate])
                      VALUES
-                        (@User1Id,
-                        @User2Id,
+                        (@RequesterUserId,
+                        @ReceiverUserId,
                         GETDATE())
                     ;";
 
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(query, new { user1Id, user2Id });
+            await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
         }
 
         public async Task CreateNotification(CreateNotificationRequest request)
@@ -217,6 +248,68 @@ namespace TradeHarborApi.Repositories
 
             using var connection = GetSqlConnection();
             await connection.QueryAsync(query, new { request.NotificationId, userId });
+        }
+
+        public async Task CreateFriendRequest(string requesterUserId, CreateFriendRequestRequest request, DateTime sentTimestamp)
+        {
+            var query = @"
+                    INSERT INTO [dbo].[FriendRequests]
+                        ([RequesterUserId]
+                        ,[ReceiverUserId]
+                        ,[SentTimestamp])
+                     VALUES
+                        (@RequesterUserId,
+                        @ReceiverUserId,
+                        @SentTimestamp)
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { requesterUserId, request.ReceiverUserId, sentTimestamp });
+        }
+
+        public async Task DeleteFriendRequest(string friendRequestId, string receiverUserId)
+        {
+            var query = @"
+                    DELETE
+                    FROM dbo.FriendRequests
+                    WHERE
+                      FriendRequestId = @FriendRequestId AND ReceiverUserId = @ReceiverUserId
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { friendRequestId, receiverUserId });
+        }
+
+        public async Task AcceptFriendRequest(string requesterUserId, string receiverUserId)
+        {
+            var query = @"
+                    DECLARE @FriendRequestId int;
+                    SET @FriendRequestId = (
+	                    select FriendRequestId
+	                    FROM [TradeHarbor].[dbo].[FriendRequests]
+	                    WHERE RequesterUserId = @RequesterUserId AND ReceiverUserId = @ReceiverUserId
+                    );
+
+                    IF @FriendRequestId IS NOT NULL
+                        BEGIN
+	                    INSERT INTO [dbo].[FriendPairs]
+		                    ([Person1Id]
+		                    ,[Person2Id]
+		                    ,[PairingDate])
+	                    VALUES
+		                    (@RequesterUserId,
+		                    @ReceiverUserId,
+		                    GETDATE());
+
+	                    DELETE
+	                    FROM dbo.FriendRequests
+	                    WHERE
+		                    FriendRequestId = @FriendRequestId;
+                        END
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
         }
     }
 }

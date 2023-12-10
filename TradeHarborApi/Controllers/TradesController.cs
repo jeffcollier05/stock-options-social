@@ -50,18 +50,18 @@ namespace TradeHarborApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<FriendProfile>> GetAllUsers()
+        public async Task<IEnumerable<UserProfile>> GetAllUsers()
         {
             var users = await _tradeService.GetAllUsers();
             return users;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> AddFriend([FromBody] ModifyFriendPairRequest request)
-        {
-            await _tradeService.AddFriend(request);
-            return Ok();
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> AddFriend([FromBody] ModifyFriendPairRequest request)
+        //{
+        //    await _tradeService.AddFriend(request);
+        //    return Ok();
+        //}
 
         [HttpPost]
         public async Task<IActionResult> RemoveFriend([FromBody] ModifyFriendPairRequest request)
@@ -75,6 +75,27 @@ namespace TradeHarborApi.Controllers
         {
             var notifications = await _tradeService.GetNotifications();
             return notifications;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteNotification(DeleteNotificationRequest request)
+        {
+            await _tradeService.DeleteNotification(request);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateFriendRequest(CreateFriendRequestRequest request)
+        {
+            await _tradeService.CreateFriendRequest(request);
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AcceptFriendRequest(AcceptFriendRequestRequest request)
+        {
+            await _tradeService.AcceptFriendRequest(request);
+            return Ok();
         }
     }
 }

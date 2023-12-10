@@ -1,8 +1,17 @@
 <div class="dialog-container">
     <span>Notifications:</span>
     <div>
-        <div *ngFor="let notification of notifications">
-            <span>{{notification.message}}</span>
+        <div *ngFor="let view of notifications">
+            <span>{{view.notification.message}}</span>
+            <button
+                mat-raised-button color="warn"
+                (click)="deleteNotification(view)"
+                class="delete-button"
+                [disabled]="view.deleteWaiting"
+            >
+                <span *ngIf="!view.deleteWaiting">X</span>
+                <mat-spinner *ngIf="view.deleteWaiting" diameter="20"></mat-spinner>
+            </button>
         </div>
     </div>
 </div>

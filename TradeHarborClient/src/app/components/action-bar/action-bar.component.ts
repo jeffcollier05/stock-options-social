@@ -13,7 +13,10 @@ export class ActionBarComponent {
 
   public activeUser: ActiveUser = new ActiveUser();
 
-  constructor(private dialog: MatDialog, private authService: AuthenticationService) { 
+  constructor(
+    private dialog: MatDialog,
+    private authService: AuthenticationService
+    ) { 
     this.activeUser = this.authService.getActiveUserFromJwt()
   }
 

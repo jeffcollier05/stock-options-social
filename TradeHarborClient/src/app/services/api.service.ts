@@ -9,6 +9,10 @@ import { FriendProfile } from '../models/friendProfile';
 import { ModifyFriendPairRequest } from '../models/modifyFriendPairRequest';
 import { DeleteTradePostRequest } from '../models/deleteTradePostRequest';
 import { Notification } from 'src/app/models/notification';
+import { DeleteNotificationRequest } from '../models/deleteNotificationRequest';
+import { CreateFriendRequestRequest } from '../models/createFriendRequestRequest';
+import { UserProfile } from '../models/userProfile';
+import { AcceptFriendRequestRequest } from '../models/acceptFriendRequestRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -32,8 +36,8 @@ export class ApiService {
     return this.httpGet<FriendProfile[]>('trades/GetFriendsForUser');
   }
 
-  public getAllUsers(): Observable<FriendProfile[] | ErrorViewModel> {
-    return this.httpGet<FriendProfile[]>('trades/GetAllUsers');
+  public getAllUsers(): Observable<UserProfile[] | ErrorViewModel> {
+    return this.httpGet<UserProfile[]>('trades/GetAllUsers');
   }
 
   public addFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
@@ -46,6 +50,18 @@ export class ApiService {
 
   public getNotifications(): Observable<Notification[] | ErrorViewModel> {
     return this.httpGet<Notification[]>('trades/GetNotifications');
+  }
+
+  public deleteNotification(request: DeleteNotificationRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/DeleteNotification', request);
+  }
+
+  public createFriendRequest(request: CreateFriendRequestRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/CreateFriendRequest', request);
+  }
+
+  public acceptFriendRequest(request: AcceptFriendRequestRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/AcceptFriendRequest', request);
   }
  
   // Wrapper for GET requests

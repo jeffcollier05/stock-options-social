@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using TradeHarborApi.Common;
 using TradeHarborApi.Configuration;
+using TradeHarborApi.Models;
 using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Services
@@ -40,6 +41,23 @@ namespace TradeHarborApi.Services
             return result;
         }
 
+        public FriendProfile GetUserProfileFromJwt()
+        {
+            var profile = new FriendProfile();
+            if (_httpContextAccessor.HttpContext != null)
+            {
+                profile = new FriendProfile
+                {
+                    UserId = _httpContextAccessor.HttpContext.User.FindFirstValue(Constants.CLAIM_ID),
+                    Username = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.USERNAME),
+                    FirstName = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.FIRST_NAME),
+                    LastName = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.LAST_NAME),
+                    ProfilePictureUrl = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.PROFILE_PICTURE_URL)
+                };
+            }
+            return profile;
+        }
+
         public async Task<string> GenerateJwtToken(IdentityUser user)
         {
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
@@ -54,10 +72,10 @@ namespace TradeHarborApi.Services
                     new Claim(type: JwtRegisteredClaimNames.Sub, value: user.UserName),
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
-                    new Claim(type: "FirstName", value: linkedAccount.FirstName),
-                    new Claim(type: "LastName", value: linkedAccount.LastName),
-                    new Claim(type: "ProfilePictureUrl", value: linkedAccount.ProfilePictureUrl),
-                    new Claim(type: "Username", value: user.UserName),
+                    new Claim(type: CustomClaims.FIRST_NAME, value: linkedAccount.FirstName),
+                    new Claim(type: CustomClaims.LAST_NAME, value: linkedAccount.LastName),
+                    new Claim(type: CustomClaims.PROFILE_PICTURE_URL, value: linkedAccount.ProfilePictureUrl),
+                    new Claim(type: CustomClaims.USERNAME, value: user.UserName),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),

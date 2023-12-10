@@ -2,27 +2,77 @@
     <mat-tab-group>
         
         <mat-tab label="Friends">
-            <div *ngFor="let friend of friendProfiles">
-                <div class="friend-container">
-                    <img class="profile-picture" src="{{friend.profilePictureUrl}}">
+            <div *ngFor="let view of users">
+                <div class="friend-container" *ngIf="view.userProfile.isFriend">
+                    <img class="profile-picture" src="{{view.userProfile.profilePictureUrl}}">
                     <div class="name-container">
-                        <span class="username-span">&commat;{{friend.username}}</span>
-                        <span class="name-span">{{friend.firstName}} {{friend.lastName}}</span>
+                        <span class="username-span">&commat;{{view.userProfile.username}}</span>
+                        <span class="name-span">{{view.userProfile.firstName}} {{view.userProfile.lastName}}</span>
                     </div>
-                    <button mat-raised-button color="warn" (click)="removeFriend(friend.userId)">Remove friend</button>
+                    <button
+                        mat-raised-button
+                        color="warn"
+                        (click)="removeFriend(view)"
+                        [disabled]="view.deleteFriendWaiting"
+                    >
+                        <span *ngIf="!view.deleteFriendWaiting">Remove Friend</span>
+                        <mat-spinner *ngIf="view.deleteFriendWaiting" diameter="30"></mat-spinner>
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+
+        <mat-tab label="Friend Requests">
+            <div *ngFor="let view of users">
+                <div class="friend-container" *ngIf="view.userProfile.sentFriendRequestToYou">
+                    <img class="profile-picture" src="{{view.userProfile.profilePictureUrl}}">
+                    <div class="name-container">
+                        <span class="username-span">&commat;{{view.userProfile.username}}</span>
+                        <span class="name-span">{{view.userProfile.firstName}} {{view.userProfile.lastName}}</span>
+                    </div>
+                    <button
+                        mat-raised-button color="accent"
+                        (click)="acceptFriendRequest(view)"
+                        [disabled]="view.acceptRequestWaiting"
+                    >
+                        <span *ngIf="!view.acceptRequestWaiting">Accept</span>
+                        <mat-spinner *ngIf="view.acceptRequestWaiting" diameter="30"></mat-spinner>
+                    </button>
+                    <button
+                        mat-raised-button color="warn"
+                        (click)="deleteFriendRequest(view)"
+                        [disabled]="view.deleteRequestWaiting"
+                    >
+                        <span *ngIf="!view.deleteRequestWaiting">Decline</span>
+                        <mat-spinner *ngIf="view.deleteRequestWaiting" diameter="30"></mat-spinner>
+                    </button>
                 </div>
             </div>
         </mat-tab>
 
         <mat-tab label="Search People">
-            <div *ngFor="let user of users">
+            <div *ngFor="let view of users">
                 <div class="friend-container">
-                    <img class="profile-picture" src="{{user.profilePictureUrl}}">
+                    <img class="profile-picture" src="{{view.userProfile.profilePictureUrl}}">
                     <div class="name-container">
-                        <span class="username-span">&commat;{{user.username}}</span>
-                        <span class="name-span">{{user.firstName}} {{user.lastName}}</span>
+                        <span class="username-span">&commat;{{view.userProfile.username}}</span>
+                        <span class="name-span">{{view.userProfile.firstName}} {{view.userProfile.lastName}}</span>
                     </div>
-                    <button *ngIf="!isUserMyFriend(user.userId)" mat-raised-button color="accent" (click)="addFriend(user.userId)">Add friend</button>
+                    <button
+                        *ngIf="!view.userProfile.isFriend
+                            && !view.userProfile.receivedFriendRequestFromYou
+                            && !view.userProfile.sentFriendRequestToYou"
+                        mat-raised-button color="accent"
+                        (click)="sendFriendRequest(view)"
+                        [disabled]="view.sendRequestWaiting"
+                    >
+                        <span *ngIf="!view.sendRequestWaiting">Send Friend Request</span>
+                        <mat-spinner *ngIf="view.sendRequestWaiting" diameter="30"></mat-spinner>
+                    </button>
+                    <button
+                        mat-raised-button
+                        *ngIf="view.userProfile.receivedFriendRequestFromYou"
+                        [disabled]="view.userProfile.receivedFriendRequestFromYou">Requested</button>
                 </div>
             </div>
         </mat-tab>

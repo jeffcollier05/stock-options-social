@@ -6,6 +6,8 @@ import { NotificationsDialogComponent } from '../notifications-dialog/notificati
 import { ApiService } from 'src/app/services/api.service';
 import { ErrorViewModel } from 'src/app/models/errorViewModel';
 import { Notification } from 'src/app/models/notification';
+import { DataService } from 'src/app/services/data.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-menu-bar',
@@ -15,15 +17,23 @@ import { Notification } from 'src/app/models/notification';
 export class MenuBarComponent {
   
   public notifications: Notification[] = [];
+  private dataSubscription!: Subscription;
 
-  constructor(private router: Router, private dialog: MatDialog, private apiService: ApiService) { }
+  constructor(
+    private router: Router,
+    private dialog: MatDialog,
+    private apiService: ApiService,
+    private dataService: DataService
+    ) { }
 
   ngOnInit(): void {
-    this.apiService.getNotifications().subscribe(resp => {
-      if (!(resp instanceof ErrorViewModel)) {
-        this.notifications = resp;
-      }
+    this.dataSubscription = this.dataService.notifications$.subscribe(notifications => {
+      this.notifications = notifications;
     });
+  }
+
+  ngOnDestroy() {
+    this.dataSubscription?.unsubscribe();
   }
 
   public logout(): void {

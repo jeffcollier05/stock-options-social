@@ -14,4 +14,15 @@
 
         public const string USERNAME_ALREADY_EXISTS = "The username already exists.";
     }
+
+    public class CustomClaims
+    {
+        public const string USERNAME = "Username";
+
+        public const string FIRST_NAME = "FirstName";
+
+        public const string LAST_NAME = "LastName";
+
+        public const string PROFILE_PICTURE_URL = "ProfilePictureUrl";
+    }
 }

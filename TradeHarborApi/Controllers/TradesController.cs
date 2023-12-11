@@ -97,5 +97,12 @@ namespace TradeHarborApi.Controllers
             await _tradeService.AcceptFriendRequest(request);
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> DeclineFriendRequest(DeclineFriendRequestRequest request)
+        {
+            await _tradeService.DeclineFriendRequest(request);
+            return Ok();
+        }
     }
 }

@@ -13,6 +13,7 @@ import { DeleteNotificationRequest } from '../models/deleteNotificationRequest';
 import { CreateFriendRequestRequest } from '../models/createFriendRequestRequest';
 import { UserProfile } from '../models/userProfile';
 import { AcceptFriendRequestRequest } from '../models/acceptFriendRequestRequest';
+import { DeclineFriendRequestRequest } from '../models/declineFriendRequestRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -62,6 +63,10 @@ export class ApiService {
 
   public acceptFriendRequest(request: AcceptFriendRequestRequest): Observable<void | ErrorViewModel> {
     return this.httpPost<void>('trades/AcceptFriendRequest', request);
+  }
+
+  public declineFriendRequest(request: DeclineFriendRequestRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/DeclineFriendRequest', request);
   }
  
   // Wrapper for GET requests

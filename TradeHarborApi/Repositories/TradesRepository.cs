@@ -267,17 +267,17 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { requesterUserId, request.ReceiverUserId, sentTimestamp });
         }
 
-        public async Task DeleteFriendRequest(string friendRequestId, string receiverUserId)
+        public async Task DeclineFriendRequest(string requesterUserId, string receiverUserId)
         {
             var query = @"
                     DELETE
                     FROM dbo.FriendRequests
                     WHERE
-                      FriendRequestId = @FriendRequestId AND ReceiverUserId = @ReceiverUserId
+                      RequesterUserId = @RequesterUserId AND ReceiverUserId = @ReceiverUserId
                     ;";
 
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(query, new { friendRequestId, receiverUserId });
+            await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
         }
 
         public async Task AcceptFriendRequest(string requesterUserId, string receiverUserId)

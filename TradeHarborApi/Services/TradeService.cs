@@ -115,5 +115,11 @@ namespace TradeHarborApi.Services
             };
             await _tradesRepo.CreateNotification(notification);
         }
+
+        public async Task DeclineFriendRequest(DeclineFriendRequestRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.DeclineFriendRequest(request.RequesterUserId, userId);
+        }
     }
 }

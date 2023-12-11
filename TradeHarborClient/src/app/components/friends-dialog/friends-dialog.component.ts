@@ -4,6 +4,7 @@ import { jwtDecode } from 'jwt-decode';
 import { Subscription } from 'rxjs';
 import { AcceptFriendRequestRequest } from 'src/app/models/acceptFriendRequestRequest';
 import { CreateFriendRequestRequest } from 'src/app/models/createFriendRequestRequest';
+import { DeclineFriendRequestRequest } from 'src/app/models/declineFriendRequestRequest';
 import { ErrorViewModel } from 'src/app/models/errorViewModel';
 import { FriendProfile } from 'src/app/models/friendProfile';
 import { ModifyFriendPairRequest } from 'src/app/models/modifyFriendPairRequest';
@@ -37,7 +38,7 @@ export class FriendsDialogComponent implements OnInit {
         {
           userProfile: x,
           acceptRequestWaiting: false,
-          deleteRequestWaiting: false,
+          declineRequestWaiting: false,
           sendRequestWaiting: false,
           deleteFriendWaiting: false
         }
@@ -105,14 +106,20 @@ export class FriendsDialogComponent implements OnInit {
   }
 
   public deleteFriendRequest(view: UserProfileView): void {
-    // var request: AcceptFriendRequestRequest = {
-    //   requesterUserId: view.userProfile.userId
-    // };
+    var request: DeclineFriendRequestRequest = {
+      requesterUserId: view.userProfile.userId
+    };
 
-    // this.apiService.acceptFriendRequest(request).subscribe(resp => {
-    //   if (!(resp instanceof ErrorViewModel)) {
-    //     this.snackbar.open('Friend request was accepted!', 'Close');
-    //   }
-    // });
+    view.declineRequestWaiting = true;
+    this.apiService.declineFriendRequest(request).subscribe(resp => {
+      view.declineRequestWaiting = false;
+      if (!(resp instanceof ErrorViewModel)) {
+        var newUsers = this.users.map(x => x.userProfile);
+        var index = newUsers.findIndex(x => x.userId == view.userProfile.userId)
+        newUsers[index].sentFriendRequestToYou = false;
+        this.dataService.pushAllUsers(newUsers);
+        this.snackbar.open('Friend request was decline.', 'Close');
+      }
+    });
   }
 }

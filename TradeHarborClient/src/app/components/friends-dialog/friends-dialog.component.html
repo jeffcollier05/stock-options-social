@@ -41,10 +41,10 @@
                     <button
                         mat-raised-button color="warn"
                         (click)="deleteFriendRequest(view)"
-                        [disabled]="view.deleteRequestWaiting"
+                        [disabled]="view.declineRequestWaiting"
                     >
-                        <span *ngIf="!view.deleteRequestWaiting">Decline</span>
-                        <mat-spinner *ngIf="view.deleteRequestWaiting" diameter="30"></mat-spinner>
+                        <span *ngIf="!view.declineRequestWaiting">Decline</span>
+                        <mat-spinner *ngIf="view.declineRequestWaiting" diameter="30"></mat-spinner>
                     </button>
                 </div>
             </div>

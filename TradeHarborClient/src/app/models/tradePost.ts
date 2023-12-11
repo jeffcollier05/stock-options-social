@@ -11,4 +11,6 @@ export class TradePost {
     lastName: string = '';
     username: string = '';
     profilePictureUrl: string = '';
+    votes: number = 0;
+    userReaction: string = '';
 }

@@ -121,5 +121,11 @@ namespace TradeHarborApi.Services
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.DeclineFriendRequest(request.RequesterUserId, userId);
         }
+
+        public async Task ReactToPost(PostReactionRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.ReactToPost(request, userId);
+        }
     }
 }

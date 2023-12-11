@@ -29,19 +29,19 @@ namespace TradeHarborApi.Repositories
         public async Task<IEnumerable<TradePost>> GetTrades(string userId)
         {
             var query = @"
-                        WITH FriendIDs AS (
-                            SELECT Person2Id AS 'Id'
-                            FROM dbo.friendpairs
-                            WHERE Person1Id = @UserId
-                            UNION
-                            SELECT Person1Id AS 'Id'
-                            FROM dbo.friendpairs
-                            WHERE Person2Id = @UserId
-                            UNION
-                            SELECT @UserId
-                        )                    
+                    WITH FriendIDs AS (
+                        SELECT Person2Id AS 'Id'
+                        FROM dbo.friendpairs
+                        WHERE Person1Id = @UserId
+                        UNION
+                        SELECT Person1Id AS 'Id'
+                        FROM dbo.friendpairs
+                        WHERE Person2Id = @UserId
+                        UNION
+                        SELECT @UserId
+                    )
 
-                        SELECT 
+                    SELECT 
                         t.Ticker,
                         p.Position,
                         op.[Option],
@@ -53,7 +53,10 @@ namespace TradeHarborApi.Repositories
                         a.FirstName,
                         a.LastName,
                         a.ProfilePictureUrl,
-                        u.UserName as Username
+                        u.UserName as Username,
+	                    (SELECT COUNT(*) FROM dbo.PostReactions WHERE PostId = t.Trade_id AND ReactionType = 'UPVOTE')
+		                    - (SELECT COUNT(*) FROM dbo.PostReactions WHERE PostId = t.Trade_id AND ReactionType = 'DOWNVOTE') AS Votes,
+	                    (SELECT ReactionType FROM dbo.PostReactions WHERE PostId = t.Trade_id AND UserId = @UserId) AS 'UserReaction'
                     FROM dbo.trades t
                     JOIN reference.[Option] op on op.Option_id = t.[Option]
                     JOIN reference.[Position] p on p.Position_id = t.Position
@@ -310,6 +313,30 @@ namespace TradeHarborApi.Repositories
 
             using var connection = GetSqlConnection();
             await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
+        }
+
+        public async Task ReactToPost(PostReactionRequest request, string userId)
+        {
+            var query = @"
+                    DELETE
+                    FROM dbo.PostReactions
+                    WHERE UserId = @UserID AND PostId = @PostId
+
+                    IF @ReactionType != 'NO-VOTE'
+                    INSERT INTO [dbo].[PostReactions]
+                        ([UserId]
+                        ,[PostId]
+                        ,[ReactionType]
+                        ,[Timestamp])
+                    VALUES
+                        (@UserId,
+                        @PostId,
+                        @ReactionType,
+                        @Timestamp)
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { userId, request.ReactionType, request.PostId, Timestamp = DateTime.UtcNow });
         }
     }
 }

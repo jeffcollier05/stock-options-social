@@ -80,3 +80,46 @@
     min-width: 1px;
     min-height: 1px;
 }
+
+
+.vote-container {
+    display: flex;
+    align-items: center;
+}
+
+.vote-arrow-container {
+    display: flex;
+    height: 30px;
+    width: 30px;
+    border-radius: 100%;
+    justify-content: center;
+    border: 2px gray solid;
+    color: gray;
+    align-items: center;
+    cursor: pointer;
+    transition: ease-in-out 0.2s;
+    margin: 0px 8px;
+
+    mat-icon {
+        transform: scale(1.5);
+    }
+
+    &:hover {
+        @extend .vote-hover;
+    }
+}
+
+.vote-hover {
+    border: 2px black solid;
+    color: black;
+}
+
+.upvote {
+    background-color: green;
+    @extend .vote-hover;
+}
+
+.downvote {
+    background-color: red;
+    @extend .vote-hover;
+}

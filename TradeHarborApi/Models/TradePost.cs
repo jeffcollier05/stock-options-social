@@ -2,28 +2,32 @@
 {
     public class TradePost
     {
-        public string UserId { get; set; }
+        public string UserId { get; set; } = string.Empty;
 
-        public string TradeId { get; set; }
+        public string TradeId { get; set; } = string.Empty;
 
-        public string Ticker { get; set; }
+        public string Ticker { get; set; } = string.Empty;
 
-        public string Position { get; set; }
+        public string Position { get; set; } = string.Empty;
 
-        public string Option { get; set; }
+        public string Option { get; set; } = string.Empty;
 
-        public string Strikeprice { get; set; }
+        public string Strikeprice { get; set; } = string.Empty;
 
-        public string Comment { get; set; }
+        public string Comment { get; set; } = string.Empty;
 
         public DateTime Timestamp { get; set; }
 
-        public string FirstName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
 
-        public string LastName { get; set; }
+        public string LastName { get; set; } = string.Empty;
 
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
-        public string ProfilePictureUrl { get; set; }
+        public string ProfilePictureUrl { get; set; } = string.Empty;
+
+        public int Votes { get; set; }
+
+        public string UserReaction {  get; set; } = string.Empty;
     }
 }

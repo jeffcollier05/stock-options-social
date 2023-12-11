@@ -23,6 +23,24 @@
                 <div class="comment-container">
                     <span>Comment: {{view.tradePost.comment}}</span>
                 </div>
+
+                <div class="vote-container">
+                    <div
+                        class="vote-arrow-container"
+                        [ngClass]="{'upvote': view.tradePost.userReaction == 'UPVOTE'}"
+                        (click)="reactToPost(view.tradePost, 'UPVOTE')"
+                    >
+                        <mat-icon>keyboard_arrow_up</mat-icon>
+                    </div>
+                    <span>{{view.tradePost.votes}}</span>
+                    <div
+                        class="vote-arrow-container"
+                        [ngClass]="{'downvote': view.tradePost.userReaction == 'DOWNVOTE'}"
+                        (click)="reactToPost(view.tradePost, 'DOWNVOTE')"
+                    >
+                        <mat-icon>keyboard_arrow_down</mat-icon>
+                    </div>
+                </div>
                 
                 <div class="timestamp-container">
                     <span>{{getDateAndTime(view.tradePost.timestamp)}}</span>

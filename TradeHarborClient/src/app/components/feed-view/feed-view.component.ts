@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteTradePostRequest } from 'src/app/models/deleteTradePostRequest';
 import { ErrorViewModel } from 'src/app/models/errorViewModel';
+import { PostReactionRequest } from 'src/app/models/postReactionRequest';
 import { TradePost } from 'src/app/models/tradePost';
 import { TradePostView } from 'src/app/models/tradePostView';
 import { ApiService } from 'src/app/services/api.service';
@@ -94,5 +95,50 @@ export class FeedViewComponent {
     var userId = this.authService.getUserIdFromJwt();
     return post.userId == userId;
   }
-  
+
+  public reactToPost(post: TradePost, newReaction: string): void {
+    var reactionAction = this.getVoteAction(post.userReaction, newReaction);
+    
+    var request: PostReactionRequest = {
+      postId: post.tradeId,
+      reactionType: reactionAction
+    };
+    
+    this.apiService.reactToPost(request).subscribe(resp => {
+      if (!(resp instanceof ErrorViewModel)) {
+        this.updatePostVoteCount(post.userReaction, reactionAction, post);
+        post.userReaction = reactionAction;
+      }
+    });
+  }
+
+  public getVoteAction(oldReaction: string, newReaction: string): string {
+    var reactionAction = '';
+    
+    if ((oldReaction == 'UPVOTE' && newReaction == 'UPVOTE')
+      || (oldReaction == 'DOWNVOTE' && newReaction == 'DOWNVOTE')
+      ) {
+      reactionAction = 'NO-VOTE';
+    } else {
+      reactionAction = newReaction;
+    }
+
+    return reactionAction;
+  }
+
+  public updatePostVoteCount(oldReaction: string, newReaction: string, post: TradePost): void {
+    if (newReaction == 'UPVOTE' &&  oldReaction == 'DOWNVOTE') {
+      post.votes += 2;
+    } else if (newReaction == 'DOWNVOTE' && oldReaction == 'UPVOTE') {
+      post.votes -= 2;
+    } else if (newReaction == 'NO-VOTE' &&  oldReaction == 'DOWNVOTE') {
+      post.votes++;
+    } else if (newReaction == 'NO-VOTE' &&  oldReaction == 'UPVOTE') {
+      post.votes--;
+    } else if (newReaction == 'UPVOTE') {
+      post.votes++;
+    } else if (newReaction == 'DOWNVOTE') {
+      post.votes--;
+    }
+  }
 }

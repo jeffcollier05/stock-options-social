@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DeleteTradePostRequest } from 'src/app/models/deleteTradePostRequest';
 import { ErrorViewModel } from 'src/app/models/errorViewModel';
+import { PostCommentRequest } from 'src/app/models/postCommentRequest';
 import { PostReactionRequest } from 'src/app/models/postReactionRequest';
 import { TradePost } from 'src/app/models/tradePost';
 import { TradePostView } from 'src/app/models/tradePostView';
@@ -29,7 +30,14 @@ export class FeedViewComponent {
     this.apiService.getTradePosts().subscribe(resp => {
       if (!(resp instanceof ErrorViewModel)) {
         resp.sort((x, y) => new Date(y.timestamp).getTime() - new Date( x.timestamp).getTime());
-        var tradePostViews: TradePostView[] = resp.map(post => ({ tradePost: post, deleteWaiting: false}));
+        var tradePostViews: TradePostView[] = resp.map(post => (
+          { 
+            tradePost: post,
+            deleteWaiting: false,
+            writeComment: '',
+            writeCommentWaiting: false
+          }
+        ));
         this.tradePosts = tradePostViews;
       }
     });
@@ -140,5 +148,21 @@ export class FeedViewComponent {
     } else if (newReaction == 'DOWNVOTE') {
       post.votes--;
     }
+  }
+
+  public commentOnPost(view: TradePostView): void {
+    var request: PostCommentRequest = {
+      postId: view.tradePost.tradeId,
+      comment: view.writeComment,
+      postOwnerUserId: view.tradePost.userId
+    };
+
+    view.writeCommentWaiting = true;
+    this.apiService.commentOnPost(request).subscribe(resp => {
+      view.writeCommentWaiting = false;
+      if (!(resp instanceof ErrorViewModel)) {
+        //todo
+      }
+    });
   }
 }

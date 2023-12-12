@@ -41,6 +41,24 @@
                         <mat-icon>keyboard_arrow_down</mat-icon>
                     </div>
                 </div>
+
+                <div>
+                    <mat-form-field appearance="fill" class="write-comment-container">
+                        <textarea matInput placeholder="Write comment" rows="2" [(ngModel)]="view.writeComment"></textarea>
+                    </mat-form-field>
+                    <button
+                        mat-raised-button
+                        color="accent"
+                        (click)="commentOnPost(view)"
+                        [disabled]="view.writeCommentWaiting">
+                            <span *ngIf="!view.writeCommentWaiting">Comment</span>
+                            <mat-spinner *ngIf="view.writeCommentWaiting" diameter="30"></mat-spinner>
+                    </button>
+
+                    <div *ngFor="let postComment of view.tradePost.comments">
+                        <span>&commat;{{postComment.username}}: {{postComment.comment}}</span>
+                    </div>
+                </div>
                 
                 <div class="timestamp-container">
                     <span>{{getDateAndTime(view.tradePost.timestamp)}}</span>

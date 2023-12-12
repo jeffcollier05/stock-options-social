@@ -111,5 +111,12 @@ namespace TradeHarborApi.Controllers
             await _tradeService.ReactToPost(request);
             return Ok();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CommentOnPost(PostCommentRequest request)
+        {
+            await _tradeService.CommentOnPost(request);
+            return Ok();
+        }
     }
 }

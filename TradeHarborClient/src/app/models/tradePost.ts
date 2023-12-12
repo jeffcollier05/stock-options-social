@@ -1,3 +1,5 @@
+import { PostComment } from "./postComment";
+
 export class TradePost {
     userId: string = '';
     tradeId: string = '';
@@ -13,4 +15,5 @@ export class TradePost {
     profilePictureUrl: string = '';
     votes: number = 0;
     userReaction: string = '';
+    comments: PostComment[] = [];
 }

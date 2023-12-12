@@ -338,5 +338,48 @@ namespace TradeHarborApi.Repositories
             using var connection = GetSqlConnection();
             await connection.QueryAsync(query, new { userId, request.ReactionType, request.PostId, Timestamp = DateTime.UtcNow });
         }
+
+        public async Task CommentOnPost(PostCommentRequest request, string userId)
+        {
+            var query = @"
+                    INSERT INTO [dbo].[PostComments]
+                        ([UserId]
+                        ,[PostId]
+                        ,[Comment]
+                        ,[Timestamp])
+                    VALUES
+                        (@UserId,
+                        @PostId,
+                        @Comment,
+                        @Timestamp)
+                    ;";
+
+            using var connection = GetSqlConnection();
+            await connection.QueryAsync(query, new { request.PostId, request.Comment, userId, Timestamp = DateTime.UtcNow });
+        }
+
+        public async Task<IEnumerable<PostComment>> GetCommentsForPost(string postId)
+        {
+            var query = @"
+                    Select
+	                    c.CommentId,
+	                    c.PostId,
+	                    c.Comment,
+	                    c.Timestamp,
+	                    u.UserName AS 'Username',
+	                    a.ProfilePictureUrl,
+	                    a.FirstName,
+	                    a.LastName,
+	                    c.UserId
+                    from dbo.PostComments c
+                    join dbo.Accounts a on a.User_id = c.UserId
+                    join dbo.AspNetUsers u on u.Id = c.UserId
+                    where c.PostId = @PostId
+                    ;";
+
+            using var connection = GetSqlConnection();
+            var comments = await connection.QueryAsync<PostComment>(query, new { postId });
+            return comments;
+        }
     }
 }

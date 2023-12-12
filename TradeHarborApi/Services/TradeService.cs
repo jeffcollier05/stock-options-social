@@ -21,6 +21,7 @@ namespace TradeHarborApi.Services
             var tradePosts = await _tradesRepo.GetTrades(userId);
             foreach (var post in tradePosts)
             {
+                post.Comments = await _tradesRepo.GetCommentsForPost(post.TradeId);
                 post.Timestamp = DateTime.SpecifyKind(post.Timestamp, DateTimeKind.Utc);
             }
 
@@ -126,6 +127,27 @@ namespace TradeHarborApi.Services
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.ReactToPost(request, userId);
+        }
+
+        public async Task CommentOnPost(PostCommentRequest request)
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.CommentOnPost(request, userId);
+
+            // Alert post owner that comment was left
+            await NotifyCommentOnPost(request.PostOwnerUserId);
+        }
+
+        private async Task NotifyCommentOnPost(string postOwnerUserId)
+        {
+            var profile = _authService.GetUserProfileFromJwt();
+            var notification = new CreateNotificationRequest
+            {
+                UserId = postOwnerUserId,
+                Message = $"{profile.Username} commented on your post.",
+                CreatedTimestamp = DateTime.UtcNow
+            };
+            await _tradesRepo.CreateNotification(notification);
         }
     }
 }

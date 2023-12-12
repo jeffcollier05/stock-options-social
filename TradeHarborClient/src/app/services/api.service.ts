@@ -15,6 +15,7 @@ import { UserProfile } from '../models/userProfile';
 import { AcceptFriendRequestRequest } from '../models/acceptFriendRequestRequest';
 import { DeclineFriendRequestRequest } from '../models/declineFriendRequestRequest';
 import { PostReactionRequest } from '../models/postReactionRequest';
+import { PostCommentRequest } from '../models/postCommentRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,10 @@ export class ApiService {
 
   public reactToPost(request: PostReactionRequest): Observable<void | ErrorViewModel> {
     return this.httpPost<void>('trades/ReactToPost', request);
+  }
+
+  public commentOnPost(request: PostCommentRequest): Observable<void | ErrorViewModel> {
+    return this.httpPost<void>('trades/CommentOnPost', request);
   }
  
   // Wrapper for GET requests

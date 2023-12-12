@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Data.Common;
 using System.Data.SqlClient;
 using TradeHarborApi.Configuration;
-using TradeHarborApi.Models.Dtos;
+using TradeHarborApi.Models.AuthDtos;
 
 namespace TradeHarborApi.Repositories
 {

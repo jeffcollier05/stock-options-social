@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TradeHarborApi.Models.Dtos
+namespace TradeHarborApi.Models.AuthDtos
 {
     public class UserRegistrationRequestDto
     {

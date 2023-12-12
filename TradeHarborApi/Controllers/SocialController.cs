@@ -42,7 +42,6 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
-        // good up to here, keep checking all request to make sure [Required] is on
         [HttpGet]
         public async Task<IEnumerable<UserProfile>> GetAllUsers()
         {
@@ -64,6 +63,7 @@ namespace TradeHarborApi.Controllers
             return notifications;
         }
 
+        // good up to here, keep checking all request to make sure [Required] is on
         [HttpPost]
         public async Task<IActionResult> DeleteNotification(DeleteNotificationRequest request)
         {

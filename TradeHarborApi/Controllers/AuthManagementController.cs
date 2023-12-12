@@ -33,7 +33,7 @@ namespace TradeHarborApi.Controllers
                 var emailExist = await _userManager.FindByEmailAsync(requestDto.Email);
                 if (emailExist != null)
                 {
-                    return BadRequest(error: Constants.EMAIL_ALREADY_EXISTS);
+                    return BadRequest(error: RequestResponse.EMAIL_ALREADY_EXISTS);
                 }
                 else
                 {
@@ -67,18 +67,18 @@ namespace TradeHarborApi.Controllers
                         }
                         else
                         {
-                            return BadRequest(error: Constants.REQUEST_FAILED);
+                            return BadRequest(error: RequestResponse.REQUEST_FAILED);
                         }
                     }
                     else
                     {
-                        return BadRequest(error: Constants.USERNAME_ALREADY_EXISTS);
+                        return BadRequest(error: RequestResponse.USERNAME_ALREADY_EXISTS);
                     }
                 }
             }
             else
             {
-                return BadRequest(error: Constants.INCOMPLETE_REQUEST);
+                return BadRequest(error: RequestResponse.INCOMPLETE_REQUEST);
             }
         }
 
@@ -103,17 +103,17 @@ namespace TradeHarborApi.Controllers
                     }
                     else
                     {
-                        return BadRequest(error: Constants.INVALID_AUTHENTICATION);
+                        return BadRequest(error: RequestResponse.INVALID_AUTHENTICATION);
                     }
                 }
                 else
                 {
-                    return BadRequest(error: Constants.INVALID_AUTHENTICATION);
+                    return BadRequest(error: RequestResponse.INVALID_AUTHENTICATION);
                 }
             }
             else
             {
-                return BadRequest(error: Constants.INCOMPLETE_REQUEST);
+                return BadRequest(error: RequestResponse.INCOMPLETE_REQUEST);
             }
         }
     }

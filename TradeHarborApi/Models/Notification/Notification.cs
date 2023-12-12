@@ -1,5 +1,8 @@
 ﻿namespace TradeHarborApi.Models.Notification
 {
+    /// <summary>
+    /// View model of a notification for the user.
+    /// </summary>
     public class Notification
     {
         public string Message { get; set; } = string.Empty;

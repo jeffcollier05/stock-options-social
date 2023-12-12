@@ -1,5 +1,8 @@
 ﻿namespace TradeHarborApi.Models
 {
+    /// <summary>
+    /// View model of another user's profile in relation to the user with JWT.
+    /// </summary>
     public class UserProfile
     {
         public string UserId { get; set; } = string.Empty;

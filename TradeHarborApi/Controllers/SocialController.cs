@@ -9,17 +9,14 @@ namespace TradeHarborApi.Controllers
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    public class TradesController : ControllerBase
+    public class SocialController : ControllerBase
     {
         private readonly TradeService _tradeService;
-        private readonly AuthService _authService;
 
-        public TradesController(TradeService tradeService, AuthService authService)
+        public SocialController(TradeService tradeService)
         {
             _tradeService = tradeService;
-            _authService = authService;
         }
-
 
         [HttpGet]
         public async Task<IEnumerable<TradePost>> GetTrades()
@@ -55,13 +52,6 @@ namespace TradeHarborApi.Controllers
             var users = await _tradeService.GetAllUsers();
             return users;
         }
-
-        //[HttpPost]
-        //public async Task<IActionResult> AddFriend([FromBody] ModifyFriendPairRequest request)
-        //{
-        //    await _tradeService.AddFriend(request);
-        //    return Ok();
-        //}
 
         [HttpPost]
         public async Task<IActionResult> RemoveFriend([FromBody] ModifyFriendPairRequest request)

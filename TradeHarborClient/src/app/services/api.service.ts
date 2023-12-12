@@ -24,59 +24,59 @@ export class ApiService {
   constructor(private http: HttpClient) { }
 
   public getTradePosts(): Observable<TradePost[] | ErrorViewModel> {
-    return this.httpGet<TradePost[]>('trades/gettrades');
+    return this.httpGet<TradePost[]>('social/gettrades');
   }
 
   public createTradePost(request: CreateTradePostRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/CreateTradePost', request);
+    return this.httpPost<void>('social/CreateTradePost', request);
   }
 
   public deleteTradePost(request: DeleteTradePostRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/DeleteTradePost', request);
+    return this.httpPost<void>('social/DeleteTradePost', request);
   }
 
   public getFriendsForUser(): Observable<FriendProfile[] | ErrorViewModel> {
-    return this.httpGet<FriendProfile[]>('trades/GetFriendsForUser');
+    return this.httpGet<FriendProfile[]>('social/GetFriendsForUser');
   }
 
   public getAllUsers(): Observable<UserProfile[] | ErrorViewModel> {
-    return this.httpGet<UserProfile[]>('trades/GetAllUsers');
+    return this.httpGet<UserProfile[]>('social/GetAllUsers');
   }
 
   public addFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/AddFriend', request);
+    return this.httpPost<void>('social/AddFriend', request);
   }
 
   public removeFriend(request: ModifyFriendPairRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/RemoveFriend', request);
+    return this.httpPost<void>('social/RemoveFriend', request);
   }
 
   public getNotifications(): Observable<Notification[] | ErrorViewModel> {
-    return this.httpGet<Notification[]>('trades/GetNotifications');
+    return this.httpGet<Notification[]>('social/GetNotifications');
   }
 
   public deleteNotification(request: DeleteNotificationRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/DeleteNotification', request);
+    return this.httpPost<void>('social/DeleteNotification', request);
   }
 
   public createFriendRequest(request: CreateFriendRequestRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/CreateFriendRequest', request);
+    return this.httpPost<void>('social/CreateFriendRequest', request);
   }
 
   public acceptFriendRequest(request: AcceptFriendRequestRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/AcceptFriendRequest', request);
+    return this.httpPost<void>('social/AcceptFriendRequest', request);
   }
 
   public declineFriendRequest(request: DeclineFriendRequestRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/DeclineFriendRequest', request);
+    return this.httpPost<void>('social/DeclineFriendRequest', request);
   }
 
   public reactToPost(request: PostReactionRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/ReactToPost', request);
+    return this.httpPost<void>('social/ReactToPost', request);
   }
 
   public commentOnPost(request: PostCommentRequest): Observable<void | ErrorViewModel> {
-    return this.httpPost<void>('trades/CommentOnPost', request);
+    return this.httpPost<void>('social/CommentOnPost', request);
   }
  
   // Wrapper for GET requests

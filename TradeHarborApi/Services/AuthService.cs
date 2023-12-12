@@ -36,7 +36,7 @@ namespace TradeHarborApi.Services
             var result = string.Empty;
             if (_httpContextAccessor.HttpContext != null)
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(Constants.CLAIM_ID);
+                result = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.CLAIM_ID);
             }
             return result;
         }
@@ -48,11 +48,11 @@ namespace TradeHarborApi.Services
             {
                 profile = new FriendProfile
                 {
-                    UserId = _httpContextAccessor.HttpContext.User.FindFirstValue(Constants.CLAIM_ID),
-                    Username = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.USERNAME),
-                    FirstName = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.FIRST_NAME),
-                    LastName = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.LAST_NAME),
-                    ProfilePictureUrl = _httpContextAccessor.HttpContext.User.FindFirstValue(CustomClaims.PROFILE_PICTURE_URL)
+                    UserId = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.CLAIM_ID),
+                    Username = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.USERNAME),
+                    FirstName = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.FIRST_NAME),
+                    LastName = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.LAST_NAME),
+                    ProfilePictureUrl = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.PROFILE_PICTURE_URL)
                 };
             }
             return profile;
@@ -68,14 +68,14 @@ namespace TradeHarborApi.Services
                 {
                     new Claim(type: JwtRegisteredClaimNames.Iss, value: _configuration.GetSection(key: "JwtConfig:ValidIssuer")?.Value),
                     new Claim(type: JwtRegisteredClaimNames.Aud, value: _configuration.GetSection(key: "JwtConfig:ValidAudience")?.Value),
-                    new Claim(type: Constants.CLAIM_ID, value: user.Id),
+                    new Claim(type: TradeHarborClaims.CLAIM_ID, value: user.Id),
                     new Claim(type: JwtRegisteredClaimNames.Sub, value: user.UserName),
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email),
                     new Claim(type: JwtRegisteredClaimNames.Jti, value: Guid.NewGuid().ToString()),
-                    new Claim(type: CustomClaims.FIRST_NAME, value: linkedAccount.FirstName),
-                    new Claim(type: CustomClaims.LAST_NAME, value: linkedAccount.LastName),
-                    new Claim(type: CustomClaims.PROFILE_PICTURE_URL, value: linkedAccount.ProfilePictureUrl),
-                    new Claim(type: CustomClaims.USERNAME, value: user.UserName),
+                    new Claim(type: TradeHarborClaims.FIRST_NAME, value: linkedAccount.FirstName),
+                    new Claim(type: TradeHarborClaims.LAST_NAME, value: linkedAccount.LastName),
+                    new Claim(type: TradeHarborClaims.PROFILE_PICTURE_URL, value: linkedAccount.ProfilePictureUrl),
+                    new Claim(type: TradeHarborClaims.USERNAME, value: user.UserName),
                 }),
                 Expires = DateTime.UtcNow.AddMinutes(60),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),

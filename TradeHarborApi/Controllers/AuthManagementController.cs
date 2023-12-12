@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using TradeHarborApi.Common;
-using TradeHarborApi.Configuration;
 using TradeHarborApi.Models.Dtos;
 using TradeHarborApi.Repositories;
 using TradeHarborApi.Services;

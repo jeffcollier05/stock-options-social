@@ -1,4 +1,4 @@
-﻿namespace TradeHarborApi.Models
+﻿namespace TradeHarborApi.Models.Friend
 {
     public class FriendProfile
     {

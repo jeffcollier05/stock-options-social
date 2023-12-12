@@ -1,4 +1,4 @@
-﻿namespace TradeHarborApi.Models
+﻿namespace TradeHarborApi.Models.Notification
 {
     public class DeleteNotificationRequest
     {

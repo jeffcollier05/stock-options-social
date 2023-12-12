@@ -1,4 +1,6 @@
-﻿namespace TradeHarborApi.Models
+﻿using TradeHarborApi.Models.PostFeatures;
+
+namespace TradeHarborApi.Models.Post
 {
     public class TradePost
     {
@@ -28,7 +30,7 @@
 
         public int Votes { get; set; }
 
-        public string UserReaction {  get; set; } = string.Empty;
+        public string UserReaction { get; set; } = string.Empty;
 
         public IEnumerable<PostComment> Comments { get; set; } = new List<PostComment>();
     }

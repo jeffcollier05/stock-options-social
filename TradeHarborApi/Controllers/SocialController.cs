@@ -2,6 +2,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TradeHarborApi.Models;
+using TradeHarborApi.Models.Friend;
+using TradeHarborApi.Models.Notification;
+using TradeHarborApi.Models.Post;
+using TradeHarborApi.Models.PostFeatures;
 using TradeHarborApi.Services;
 
 namespace TradeHarborApi.Controllers
@@ -31,6 +35,8 @@ namespace TradeHarborApi.Controllers
             await _tradeService.CreateTradePost(request);
             return Ok();
         }
+
+        // good up to here
 
         [HttpPost]
         public async Task<IActionResult> DeleteTradePost([FromBody] DeleteTradePostRequest request)

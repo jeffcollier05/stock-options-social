@@ -1,4 +1,4 @@
-﻿namespace TradeHarborApi.Models
+﻿namespace TradeHarborApi.Models.PostFeatures
 {
     public class PostComment
     {

@@ -1,5 +1,8 @@
-﻿using Azure.Core;
-using TradeHarborApi.Models;
+﻿using TradeHarborApi.Models;
+using TradeHarborApi.Models.Friend;
+using TradeHarborApi.Models.Notification;
+using TradeHarborApi.Models.Post;
+using TradeHarborApi.Models.PostFeatures;
 using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Services
@@ -30,9 +33,8 @@ namespace TradeHarborApi.Services
 
         public async Task CreateTradePost(CreateTradePostRequest request)
         {
-            request.UserId = _authService.GetUserIdFromJwt();
-            request.Timestamp = DateTime.UtcNow;
-            await _tradesRepo.CreateTradePost(request);
+            var userId = _authService.GetUserIdFromJwt();
+            await _tradesRepo.CreateTradePost(request, userId);
         }
 
         public async Task DeleteTradePost(DeleteTradePostRequest request)

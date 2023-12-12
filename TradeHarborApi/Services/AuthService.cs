@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using TradeHarborApi.Common;
 using TradeHarborApi.Configuration;
-using TradeHarborApi.Models;
+using TradeHarborApi.Models.Friend;
 using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Services
@@ -33,12 +33,14 @@ namespace TradeHarborApi.Services
 
         public string GetUserIdFromJwt()
         {
-            var result = string.Empty;
-            if (_httpContextAccessor.HttpContext != null)
+            var userId = _httpContextAccessor?.HttpContext?.User?.FindFirstValue(TradeHarborClaims.CLAIM_ID) ?? "";
+
+            if (string.IsNullOrEmpty(userId))
             {
-                result = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.CLAIM_ID);
+                throw new InvalidOperationException("UserId from the JWT is null.");
             }
-            return result;
+
+            return userId;
         }
 
         public FriendProfile GetUserProfileFromJwt()

@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using Dapper;
 using TradeHarborApi.Configuration;
 using TradeHarborApi.Models;
+using TradeHarborApi.Models.Notification;
+using TradeHarborApi.Models.Friend;
+using TradeHarborApi.Models.Post;
+using TradeHarborApi.Models.PostFeatures;
 
 namespace TradeHarborApi.Repositories
 {
@@ -84,7 +88,7 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { request.TradeId, userId});
         }
 
-        public async Task<object> CreateTradePost(CreateTradePostRequest request)
+        public async Task<object> CreateTradePost(CreateTradePostRequest request, string userId)
         {
             var query = @"
                     DECLARE @PositionId INT;
@@ -103,8 +107,19 @@ namespace TradeHarborApi.Repositories
                     SELECT @PrimaryKey AS 'NewPrimaryKey';
                     ";
 
+            var map = new
+            {
+                userId,
+                request.Ticker,
+                request.Position,
+                request.Option,
+                request.Strikeprice,
+                request.Comment,
+                Timestamp = DateTime.UtcNow
+            };
+
             using var connection = GetSqlConnection();
-            var tradePosts = await connection.QueryAsync<object>(query, request);
+            var tradePosts = await connection.QueryAsync<object>(query, map);
             return tradePosts;
         }
 

@@ -2,13 +2,26 @@
 {
     public class ApiConfiguration : IApiConfiguration
     {
-        public IConfiguration Configuration { get; set; }
+        private IConfiguration Configuration { get; set; }
 
         public ApiConfiguration(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public string SqlConnectionString => Configuration["ConnectionStrings:SqlConnectionString"];
+        public string SqlConnectionString => GetSqlConnectionString();
+
+        private string GetSqlConnectionString()
+        {
+            var sqlConnectionString = Configuration["ConnectionStrings:SqlConnectionString"];
+            if (sqlConnectionString != null)
+            {
+                return sqlConnectionString;
+            }
+            else
+            {
+                throw new InvalidOperationException("Sql connection string is null.");
+            }
+        }
     }
 }

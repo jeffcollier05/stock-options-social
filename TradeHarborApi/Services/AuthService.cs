@@ -7,7 +7,7 @@ using System.Security.Claims;
 using System.Text;
 using TradeHarborApi.Common;
 using TradeHarborApi.Configuration;
-using TradeHarborApi.Models.Friend;
+using TradeHarborApi.Models.AuthDtos;
 using TradeHarborApi.Repositories;
 
 namespace TradeHarborApi.Services
@@ -43,12 +43,12 @@ namespace TradeHarborApi.Services
             return userId;
         }
 
-        public FriendProfile GetUserProfileFromJwt()
+        public JwtUserProfileDto GetUserProfileFromJwt()
         {
-            var profile = new FriendProfile();
+            var profile = new JwtUserProfileDto();
             if (_httpContextAccessor.HttpContext != null)
             {
-                profile = new FriendProfile
+                profile = new JwtUserProfileDto
                 {
                     UserId = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.CLAIM_ID),
                     Username = _httpContextAccessor.HttpContext.User.FindFirstValue(TradeHarborClaims.USERNAME),

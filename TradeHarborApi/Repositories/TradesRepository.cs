@@ -8,7 +8,6 @@ using Dapper;
 using TradeHarborApi.Configuration;
 using TradeHarborApi.Models;
 using TradeHarborApi.Models.Notification;
-using TradeHarborApi.Models.Friend;
 using TradeHarborApi.Models.Post;
 using TradeHarborApi.Models.PostFeatures;
 
@@ -121,30 +120,6 @@ namespace TradeHarborApi.Repositories
             using var connection = GetSqlConnection();
             var tradePosts = await connection.QueryAsync<object>(query, map);
             return tradePosts;
-        }
-
-        public async Task<IEnumerable<FriendProfile>> GetFriendsForUser(string userId)
-        {
-            var query = @"
-                    WITH FriendIDs AS (
-                        SELECT Person2Id AS 'Id'
-                        FROM dbo.friendpairs
-                        WHERE Person1Id = @UserId
-                        UNION
-                        SELECT Person1Id AS 'Id'
-                        FROM dbo.friendpairs
-                        WHERE Person2Id = @UserId
-                    )
-
-                    SELECT f.Id as 'UserId', a.FirstName, a.LastName, a.ProfilePictureUrl, u.UserName
-                    FROM FriendIDs f
-                    JOIN dbo.Accounts a ON a.User_id = f.Id
-                    JOIN dbo.AspNetUsers u on u.Id = f.Id
-                    ;";
-
-            using var connection = GetSqlConnection();
-            var friends = await connection.QueryAsync<FriendProfile>(query, new { userId });
-            return friends;
         }
 
         public async Task<IEnumerable<UserProfile>> GetAllUsers(string userId)

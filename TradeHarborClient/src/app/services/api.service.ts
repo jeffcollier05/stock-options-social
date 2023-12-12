@@ -5,7 +5,6 @@ import { Observable, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { ErrorViewModel } from '../models/errorViewModel';
 import { CreateTradePostRequest } from '../models/createTradePostRequest';
-import { FriendProfile } from '../models/friendProfile';
 import { ModifyFriendPairRequest } from '../models/modifyFriendPairRequest';
 import { DeleteTradePostRequest } from '../models/deleteTradePostRequest';
 import { Notification } from 'src/app/models/notification';
@@ -33,10 +32,6 @@ export class ApiService {
 
   public deleteTradePost(request: DeleteTradePostRequest): Observable<void | ErrorViewModel> {
     return this.httpPost<void>('social/DeleteTradePost', request);
-  }
-
-  public getFriendsForUser(): Observable<FriendProfile[] | ErrorViewModel> {
-    return this.httpGet<FriendProfile[]>('social/GetFriendsForUser');
   }
 
   public getAllUsers(): Observable<UserProfile[] | ErrorViewModel> {

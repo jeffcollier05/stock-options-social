@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TradeHarborApi.Models;
-using TradeHarborApi.Models.Friend;
 using TradeHarborApi.Models.Notification;
 using TradeHarborApi.Models.Post;
 using TradeHarborApi.Models.PostFeatures;
@@ -36,8 +35,6 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
-        // good up to here
-
         [HttpPost]
         public async Task<IActionResult> DeleteTradePost([FromBody] DeleteTradePostRequest request)
         {
@@ -45,13 +42,7 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
-        {
-            var friends = await _tradeService.GetFriendsForUser();
-            return friends;
-        }
-
+        // good up to here, keep checking all request to make sure [Required] is on
         [HttpGet]
         public async Task<IEnumerable<UserProfile>> GetAllUsers()
         {

@@ -6,7 +6,6 @@ import { AcceptFriendRequestRequest } from 'src/app/models/acceptFriendRequestRe
 import { CreateFriendRequestRequest } from 'src/app/models/createFriendRequestRequest';
 import { DeclineFriendRequestRequest } from 'src/app/models/declineFriendRequestRequest';
 import { ErrorViewModel } from 'src/app/models/errorViewModel';
-import { FriendProfile } from 'src/app/models/friendProfile';
 import { ModifyFriendPairRequest } from 'src/app/models/modifyFriendPairRequest';
 import { UserProfile } from 'src/app/models/userProfile';
 import { UserProfileView } from 'src/app/models/userProfileView';
@@ -20,8 +19,7 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./friends-dialog.component.scss']
 })
 export class FriendsDialogComponent implements OnInit {
-
-  // public friendProfiles: FriendProfile[] = [];
+  
   public users: UserProfileView[] = [];
   private usersSubscription!: Subscription;
 

@@ -7,8 +7,6 @@ namespace TradeHarborApi.Data
     {
         public ApiDbContext(DbContextOptions<ApiDbContext> options)
             : base(options) 
-        {
-            // here
-        }
+        { }
     }
 }

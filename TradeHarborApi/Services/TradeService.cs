@@ -1,5 +1,4 @@
 ﻿using TradeHarborApi.Models;
-using TradeHarborApi.Models.Friend;
 using TradeHarborApi.Models.Notification;
 using TradeHarborApi.Models.Post;
 using TradeHarborApi.Models.PostFeatures;
@@ -11,14 +10,19 @@ namespace TradeHarborApi.Services
     {
         private readonly TradesRepository _tradesRepo;
         private readonly AuthService _authService;
+        private readonly NotificationService _notificationService;
 
-        public TradeService(TradesRepository tradesRepo, AuthService authService)
+        public TradeService(
+            TradesRepository tradesRepo,
+            AuthService authService,
+            NotificationService notificationService)
         {
             _tradesRepo = tradesRepo;
             _authService = authService;
+            _notificationService = notificationService;
         }
 
-        public async Task<IEnumerable<TradePost>> GetTrades()
+        internal async Task<IEnumerable<TradePost>> GetTrades()
         {
             var userId = _authService.GetUserIdFromJwt();
             var tradePosts = await _tradesRepo.GetTrades(userId);
@@ -31,125 +35,78 @@ namespace TradeHarborApi.Services
             return tradePosts;
         }
 
-        public async Task CreateTradePost(CreateTradePostRequest request)
+        internal async Task CreateTradePost(CreateTradePostRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.CreateTradePost(request, userId);
         }
 
-        public async Task DeleteTradePost(DeleteTradePostRequest request)
+        internal async Task DeleteTradePost(DeleteTradePostRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.DeleteTradePost(request, userId);
         }
 
-        public async Task<IEnumerable<FriendProfile>> GetFriendsForUser()
-        {
-            var userId = _authService.GetUserIdFromJwt();
-            var friends = await _tradesRepo.GetFriendsForUser(userId);
-            return friends;
-        }
-
-        public async Task<IEnumerable<UserProfile>> GetAllUsers()
+        internal async Task<IEnumerable<UserProfile>> GetAllUsers()
         {
             var userId = _authService.GetUserIdFromJwt();
             var users = await _tradesRepo.GetAllUsers(userId);
             return users;
         }
 
-        //public async Task AddFriend(ModifyFriendPairRequest request)
-        //{
-        //    var userId = _authService.GetUserIdFromJwt();
-        //    await _tradesRepo.AddFriend(request.FriendUserId, userId);
-
-        //    //temp VV
-        //    var notification = new CreateNotificationRequest
-        //    {
-        //        UserId = _authService.GetUserIdFromJwt(),
-        //        Message = "Test notification 1.",
-        //        CreatedTimestamp = DateTime.UtcNow
-        //    };
-        //    await _tradesRepo.CreateNotification(notification);
-        //    // test code ^^^
-        //}
-
-        public async Task RemoveFriend(ModifyFriendPairRequest request)
+        internal async Task RemoveFriend(ModifyFriendPairRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.RemoveFriend(request.FriendUserId, userId);
         }
 
-        public async Task<IEnumerable<Notification>> GetNotifications()
+        internal async Task<IEnumerable<Notification>> GetNotifications()
         {
             var userId = _authService.GetUserIdFromJwt();
             var notifications = await _tradesRepo.GetNotifications(userId);
             return notifications;
         }
 
-        public async Task DeleteNotification(DeleteNotificationRequest request)
+        internal async Task DeleteNotification(DeleteNotificationRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.DeleteNotification(request, userId);
         }
 
-        public async Task CreateFriendRequest(CreateFriendRequestRequest request)
+        internal async Task CreateFriendRequest(CreateFriendRequestRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.CreateFriendRequest(userId, request, DateTime.UtcNow);
         }
 
-        public async Task AcceptFriendRequest(AcceptFriendRequestRequest request)
+        internal async Task AcceptFriendRequest(AcceptFriendRequestRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.AcceptFriendRequest(request.RequesterUserId, userId);
 
             // Notify requester that the user accepted their friend request
-            await NotifyFriendRequestAccpeted(request.RequesterUserId);
+            await _notificationService.NotifyFriendRequestAccpeted(request.RequesterUserId);
         }
 
-        private async Task NotifyFriendRequestAccpeted(string requesterUserId)
-        {
-            var profile = _authService.GetUserProfileFromJwt();
-            var notification = new CreateNotificationRequest
-            {
-                UserId = requesterUserId,
-                Message = $"{profile.Username} has accepted your friend request.",
-                CreatedTimestamp = DateTime.UtcNow
-            };
-            await _tradesRepo.CreateNotification(notification);
-        }
-
-        public async Task DeclineFriendRequest(DeclineFriendRequestRequest request)
+        internal async Task DeclineFriendRequest(DeclineFriendRequestRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.DeclineFriendRequest(request.RequesterUserId, userId);
         }
 
-        public async Task ReactToPost(PostReactionRequest request)
+        internal async Task ReactToPost(PostReactionRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.ReactToPost(request, userId);
         }
 
-        public async Task CommentOnPost(PostCommentRequest request)
+        internal async Task CommentOnPost(PostCommentRequest request)
         {
             var userId = _authService.GetUserIdFromJwt();
             await _tradesRepo.CommentOnPost(request, userId);
 
             // Alert post owner that comment was left
-            await NotifyCommentOnPost(request.PostOwnerUserId);
-        }
-
-        private async Task NotifyCommentOnPost(string postOwnerUserId)
-        {
-            var profile = _authService.GetUserProfileFromJwt();
-            var notification = new CreateNotificationRequest
-            {
-                UserId = postOwnerUserId,
-                Message = $"{profile.Username} commented on your post.",
-                CreatedTimestamp = DateTime.UtcNow
-            };
-            await _tradesRepo.CreateNotification(notification);
+            await _notificationService.NotifyCommentOnPost(request.PostOwnerUserId);
         }
     }
 }

@@ -9,6 +9,9 @@ using TradeHarborApi.Services;
 
 namespace TradeHarborApi.Controllers
 {
+    /// <summary>
+    /// API Controller for social-related actions.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -16,11 +19,19 @@ namespace TradeHarborApi.Controllers
     {
         private readonly SocialService _socialService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SocialController"/> class.
+        /// </summary>
+        /// <param name="socialService">The social service used for handling social-related actions.</param>
         public SocialController(SocialService socialService)
         {
             _socialService = socialService;
         }
 
+        /// <summary>
+        /// Retrieves a collection of trade posts.
+        /// </summary>
+        /// <returns>An asynchronous task that represents the operation. The task result is a collection of <see cref="TradePost"/>.</returns>
         [HttpGet]
         public async Task<IEnumerable<TradePost>> GetTrades()
         {
@@ -28,6 +39,11 @@ namespace TradeHarborApi.Controllers
             return tradePosts;
         }
 
+        /// <summary>
+        /// Creates a new trade post based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for creating a trade post.</param>
+        /// <returns>An asynchronous task that represents the operation. The task result is an <see cref="IActionResult"/> indicating the result of the operation.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateTradePost([FromBody] CreateTradePostRequest request)
         {
@@ -35,6 +51,11 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Deletes a trade post based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for deleting a trade post.</param>
+        /// <returns>An asynchronous task that represents the operation. The task result is an <see cref="IActionResult"/> indicating the result of the operation.</returns>
         [HttpPost]
         public async Task<IActionResult> DeleteTradePost([FromBody] DeleteTradePostRequest request)
         {
@@ -42,6 +63,13 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Retrieves a collection of user profiles.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is a collection of <see cref="UserProfile"/>.
+        /// </returns>
         [HttpGet]
         public async Task<IEnumerable<UserProfile>> GetAllUsers()
         {
@@ -49,6 +77,14 @@ namespace TradeHarborApi.Controllers
             return users;
         }
 
+        /// <summary>
+        /// Removes a friend connection between two users based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for removing a friend connection.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> RemoveFriend([FromBody] ModifyFriendPairRequest request)
         {
@@ -56,6 +92,13 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Retrieves a collection of notifications.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is a collection of <see cref="Notification"/>.
+        /// </returns>
         [HttpGet]
         public async Task<IEnumerable<Notification>> GetNotifications()
         {
@@ -63,6 +106,14 @@ namespace TradeHarborApi.Controllers
             return notifications;
         }
 
+        /// <summary>
+        /// Deletes a notification based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for deleting a notification.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> DeleteNotification(DeleteNotificationRequest request)
         {
@@ -70,6 +121,14 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Creates a friend request based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for creating a friend request.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> CreateFriendRequest(CreateFriendRequestRequest request)
         {
@@ -77,6 +136,14 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Accepts a friend request based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for accepting a friend request.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> AcceptFriendRequest(AcceptFriendRequestRequest request)
         {
@@ -84,6 +151,14 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Declines a friend request based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for declining a friend request.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> DeclineFriendRequest(DeclineFriendRequestRequest request)
         {
@@ -91,6 +166,14 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Reacts to a post based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for reacting to a post.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> ReactToPost(PostReactionRequest request)
         {
@@ -98,6 +181,14 @@ namespace TradeHarborApi.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Comments on a post based on the provided request.
+        /// </summary>
+        /// <param name="request">The request containing information for commenting on a post.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation. 
+        /// The task result is an <see cref="IActionResult"/> indicating the result of the operation.
+        /// </returns>
         [HttpPost]
         public async Task<IActionResult> CommentOnPost(PostCommentRequest request)
         {

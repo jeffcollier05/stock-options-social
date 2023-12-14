@@ -1,5 +1,5 @@
 ﻿using Dapper;
-using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using TradeHarborApi.Configuration;
@@ -40,21 +40,9 @@ namespace TradeHarborApi.Repositories
         /// <returns>An asynchronous task representing the insert operation.</returns>
         public async Task InsertLinkedAccountInformation(LinkedAccountDto request)
         {
-            var query = @"
-                    INSERT INTO [dbo].[Accounts]
-                        ([User_id]
-                        ,[FirstName]
-                        ,[LastName]
-                        ,[ProfilePictureUrl])
-                    VALUES
-                        (@UserId,
-                        @FirstName,
-                        @LastName,
-                        @ProfilePictureUrl)
-                    ";
-
+            var procedure = "dbo.InsertLinkedAccountInformation";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(query, request);
+            await connection.QueryAsync(procedure, request, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -67,14 +55,9 @@ namespace TradeHarborApi.Repositories
         /// </returns>
         public async Task<LinkedAccountDto> FindLinkedAccountInformation(string userId)
         {
-            var query = @"
-                    SELECT FirstName, LastName, ProfilePictureUrl
-                    FROM [TradeHarbor].[dbo].[Accounts]
-                    WHERE [User_id] = @UserId
-                    ";
-
+            var procedure = "dbo.FindLinkedAccountInformation";
             using var connection = GetSqlConnection();
-            var linkedAccounts = await connection.QueryAsync<LinkedAccountDto>(query, new { userId });
+            var linkedAccounts = await connection.QueryAsync<LinkedAccountDto>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
             return linkedAccounts.Single();
         }
     }

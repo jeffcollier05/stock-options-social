@@ -13,11 +13,11 @@ using TradeHarborApi.Models.PostFeatures;
 
 namespace TradeHarborApi.Repositories
 {
-    public class TradesRepository
+    public class SocialRepository
     {
         private readonly IApiConfiguration _config;
 
-        public TradesRepository(IApiConfiguration config)
+        public SocialRepository(IApiConfiguration config)
         {
             _config = config;
         }
@@ -243,7 +243,7 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { request.NotificationId, userId });
         }
 
-        public async Task CreateFriendRequest(string requesterUserId, CreateFriendRequestRequest request, DateTime sentTimestamp)
+        public async Task CreateFriendRequest(string requesterUserId, CreateFriendRequestRequest request)
         {
             var query = @"
                     INSERT INTO [dbo].[FriendRequests]
@@ -257,7 +257,7 @@ namespace TradeHarborApi.Repositories
                     ;";
 
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(query, new { requesterUserId, request.ReceiverUserId, sentTimestamp });
+            await connection.QueryAsync(query, new { requesterUserId, request.ReceiverUserId, SentTimestamp = DateTime.UtcNow });
         }
 
         public async Task DeclineFriendRequest(string requesterUserId, string receiverUserId)

@@ -32,8 +32,8 @@ namespace TradeHarborApi
                 options.UseSqlServer(Configuration.GetConnectionString("SqlConnectionString"));
             });
 
-            services.AddScoped<TradesRepository>();
-            services.AddScoped<TradeService>();
+            services.AddScoped<SocialRepository>();
+            services.AddScoped<SocialService>();
             services.AddScoped<AuthService>();
             services.AddScoped<NotificationService>();
             services.AddScoped<AuthRepository>();

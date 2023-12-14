@@ -5,12 +5,15 @@ namespace TradeHarborApi.Services
 {
     public class NotificationService
     {
-        private readonly TradesRepository _tradesRepo;
+        private readonly SocialRepository _socialRepository;
         private readonly AuthService _authService;
 
-        public NotificationService(TradesRepository tradesRepo, AuthService authService)
+        public NotificationService(
+            SocialRepository socialRepository,
+            AuthService authService
+            )
         {
-            _tradesRepo = tradesRepo;
+            _socialRepository = socialRepository;
             _authService = authService;
         }
 
@@ -23,7 +26,7 @@ namespace TradeHarborApi.Services
                 Message = $"{profile.Username} has accepted your friend request.",
                 CreatedTimestamp = DateTime.UtcNow
             };
-            await _tradesRepo.CreateNotification(notification);
+            await _socialRepository.CreateNotification(notification);
         }
 
         internal async Task NotifyCommentOnPost(string postOwnerUserId)
@@ -35,7 +38,7 @@ namespace TradeHarborApi.Services
                 Message = $"{profile.Username} commented on your post.",
                 CreatedTimestamp = DateTime.UtcNow
             };
-            await _tradesRepo.CreateNotification(notification);
+            await _socialRepository.CreateNotification(notification);
         }
     }
 }

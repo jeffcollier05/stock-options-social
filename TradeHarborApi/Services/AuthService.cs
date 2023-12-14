@@ -95,26 +95,6 @@ namespace TradeHarborApi.Services
         }
 
         /// <summary>
-        /// Finds the value of a specific configuration key within the provided configuration.
-        /// </summary>
-        /// <param name="configuration">The configuration interface providing access to application settings.</param>
-        /// <param name="claimKey">The key for the configuration value to find.</param>
-        /// <returns>The value of the specified configuration key.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when the configuration value for the specified key is missing.
-        /// </exception>
-        private static string FindConfigurationValue(IConfiguration configuration, string claimKey)
-        {
-            var claimValue = configuration.GetSection(key: claimKey)?.Value;
-            if (claimValue == null)
-            {
-                throw new InvalidOperationException($"Missing the configuration value for the key {claimKey}.");
-            }
-
-            return claimValue;
-        }
-
-        /// <summary>
         /// Generates a JWT token for the specified user.
         /// </summary>
         /// <param name="user">The user for whom the JWT token is generated.</param>
@@ -132,8 +112,8 @@ namespace TradeHarborApi.Services
             {
                 Subject = new ClaimsIdentity(new[]
                 {
-                    new Claim(type: JwtRegisteredClaimNames.Iss, value: FindConfigurationValue(_configuration, "JwtConfig:ValidIssuer")),
-                    new Claim(type: JwtRegisteredClaimNames.Aud, value: FindConfigurationValue(_configuration, "JwtConfig:ValidAudience")),
+                    new Claim(type: JwtRegisteredClaimNames.Iss, value: TradeHarborUtility.FindConfigurationValue(_configuration, "JwtConfig:ValidIssuer")),
+                    new Claim(type: JwtRegisteredClaimNames.Aud, value: TradeHarborUtility.FindConfigurationValue(_configuration, "JwtConfig:ValidAudience")),
                     new Claim(type: TradeHarborClaims.CLAIM_ID, value: user.Id),
                     new Claim(type: JwtRegisteredClaimNames.Sub, value: user.UserName ?? ""),
                     new Claim(type: JwtRegisteredClaimNames.Email, value: user.Email ?? ""),

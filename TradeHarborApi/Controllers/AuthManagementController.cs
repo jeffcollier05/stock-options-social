@@ -7,6 +7,9 @@ using TradeHarborApi.Services;
 
 namespace TradeHarborApi.Controllers
 {
+    /// <summary>
+    /// Controller responsible for handling authentication-related requests such as user registration and login.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AuthManagementController : ControllerBase
@@ -15,6 +18,12 @@ namespace TradeHarborApi.Controllers
         private readonly AuthRepository _authRepository;
         private readonly AuthService _authService;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthManagementController"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager for managing identity users.</param>
+        /// <param name="authRepository">The repository for authentication-related database operations.</param>
+        /// <param name="authService">The service for generating JWT tokens and managing authentication.</param>
         public AuthManagementController(
             UserManager<IdentityUser> userManager,
             AuthRepository authRepository,
@@ -25,6 +34,11 @@ namespace TradeHarborApi.Controllers
             _authService = authService;
         }
 
+        /// <summary>
+        /// Registers a new user with the provided registration information.
+        /// </summary>
+        /// <param name="requestDto">The registration request data transfer object.</param>
+        /// <returns>An action result indicating the success or failure of the registration process.</returns>
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequestDto requestDto)
         {
@@ -82,6 +96,11 @@ namespace TradeHarborApi.Controllers
             }
         }
 
+        /// <summary>
+        /// Logs in a user with the provided login information.
+        /// </summary>
+        /// <param name="requestDto">The login request data transfer object.</param>
+        /// <returns>An action result indicating the success or failure of the login process.</returns>
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] UserLoginRequestDto requestDto)
         {

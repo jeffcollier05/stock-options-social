@@ -1,9 +1,5 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
 using Dapper;
 using TradeHarborApi.Configuration;
 using TradeHarborApi.Models;
@@ -13,15 +9,26 @@ using TradeHarborApi.Models.PostFeatures;
 
 namespace TradeHarborApi.Repositories
 {
+    /// <summary>
+    /// Repository for handling data operations related to social interactions.
+    /// </summary>
     public class SocialRepository
     {
         private readonly IApiConfiguration _config;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SocialRepository"/> class.
+        /// </summary>
+        /// <param name="config">API configuration.</param>
         public SocialRepository(IApiConfiguration config)
         {
             _config = config;
         }
 
+        /// <summary>
+        /// Gets a new open SqlConnection using the configured connection string.
+        /// </summary>
+        /// <returns>A new instance of <see cref="DbConnection"/> representing an open SqlConnection.</returns>
         private DbConnection GetSqlConnection()
         {
             var connection = new SqlConnection(_config.SqlConnectionString);
@@ -29,6 +36,11 @@ namespace TradeHarborApi.Repositories
             return connection;
         }
 
+        /// <summary>
+        /// Retrieves trade posts for a given user and their friends.
+        /// </summary>
+        /// <param name="userId">User ID for whom to retrieve trade posts.</param>
+        /// <returns>Collection of trade posts.</returns>
         public async Task<IEnumerable<TradePost>> GetTrades(string userId)
         {
             var query = @"
@@ -75,6 +87,11 @@ namespace TradeHarborApi.Repositories
             return tradePosts;
         }
 
+        /// <summary>
+        /// Deletes a trade post.
+        /// </summary>
+        /// <param name="request">Request object containing trade post details.</param>
+        /// <param name="userId">User ID making the request.</param>
         public async Task DeleteTradePost(DeleteTradePostRequest request, string userId)
         {
             var query = @"
@@ -87,7 +104,13 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { request.TradeId, userId});
         }
 
-        public async Task<object> CreateTradePost(CreateTradePostRequest request, string userId)
+        /// <summary>
+        /// Creates a new trade post.
+        /// </summary>
+        /// <param name="request">Request object containing trade post details.</param>
+        /// <param name="userId">User ID creating the trade post.</param>
+        /// <returns>Object representing the newly created trade post.</returns>
+        public async Task<int> CreateTradePost(CreateTradePostRequest request, string userId)
         {
             var query = @"
                     DECLARE @PositionId INT;
@@ -106,7 +129,7 @@ namespace TradeHarborApi.Repositories
                     SELECT @PrimaryKey AS 'NewPrimaryKey';
                     ";
 
-            var map = new
+            var parameters = new
             {
                 userId,
                 request.Ticker,
@@ -118,10 +141,15 @@ namespace TradeHarborApi.Repositories
             };
 
             using var connection = GetSqlConnection();
-            var tradePosts = await connection.QueryAsync<object>(query, map);
-            return tradePosts;
+            var primaryKey = await connection.QueryAsync<int>(query, parameters);
+            return primaryKey.Single();
         }
 
+        /// <summary>
+        /// Retrieves user profiles for all users except the current user.
+        /// </summary>
+        /// <param name="userId">User ID for whom to exclude from the results.</param>
+        /// <returns>Collection of user profiles.</returns>
         public async Task<IEnumerable<UserProfile>> GetAllUsers(string userId)
         {
             var query = @"
@@ -166,6 +194,11 @@ namespace TradeHarborApi.Repositories
             return users;
         }
 
+        /// <summary>
+        /// Removes a friend connection between two users.
+        /// </summary>
+        /// <param name="user1Id">User ID of the first user.</param>
+        /// <param name="user2Id">User ID of the second user.</param>
         public async Task RemoveFriend(string user1Id, string user2Id)
         {
             var query = @"
@@ -181,23 +214,10 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { user1Id, user2Id });
         }
 
-        public async Task AddFriend(string requesterUserId, string receiverUserId)
-        {
-            var query = @"
-                    INSERT INTO [dbo].[FriendPairs]
-                        ([Person1Id]
-                        ,[Person2Id]
-                        ,[PairingDate])
-                     VALUES
-                        (@RequesterUserId,
-                        @ReceiverUserId,
-                        GETDATE())
-                    ;";
-
-            using var connection = GetSqlConnection();
-            await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
-        }
-
+        /// <summary>
+        /// Creates a notification for a user.
+        /// </summary>
+        /// <param name="request">Request object containing notification details.</param>
         public async Task CreateNotification(CreateNotificationRequest request)
         {
             var query = @"
@@ -217,6 +237,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, request);
         }
 
+        /// <summary>
+        /// Retrieves notifications for a specific user.
+        /// </summary>
+        /// <param name="userId">User ID for whom to retrieve notifications.</param>
+        /// <returns>Collection of notifications.</returns>
         public async Task<IEnumerable<Notification>> GetNotifications(string userId)
         {
             var query = @"
@@ -231,6 +256,11 @@ namespace TradeHarborApi.Repositories
             return notifications;
         }
 
+        /// <summary>
+        /// Deletes a notification for a specific user.
+        /// </summary>
+        /// <param name="request">Request object containing notification details.</param>
+        /// <param name="userId">User ID for whom to delete the notification.</param>
         public async Task DeleteNotification(DeleteNotificationRequest request, string userId)
         {
             var query = @"
@@ -243,6 +273,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { request.NotificationId, userId });
         }
 
+        /// <summary>
+        /// Creates a friend request between two users.
+        /// </summary>
+        /// <param name="requesterUserId">User ID of the requester.</param>
+        /// <param name="request">Request object containing friend request details.</param>
         public async Task CreateFriendRequest(string requesterUserId, CreateFriendRequestRequest request)
         {
             var query = @"
@@ -260,6 +295,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { requesterUserId, request.ReceiverUserId, SentTimestamp = DateTime.UtcNow });
         }
 
+        /// <summary>
+        /// Declines a friend request from a specific user.
+        /// </summary>
+        /// <param name="requesterUserId">User ID of the requester.</param>
+        /// <param name="receiverUserId">User ID of the receiver.</param>
         public async Task DeclineFriendRequest(string requesterUserId, string receiverUserId)
         {
             var query = @"
@@ -273,6 +313,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
         }
 
+        /// <summary>
+        /// Accepts a friend request and establishes a friend connection between two users.
+        /// </summary>
+        /// <param name="requesterUserId">User ID of the requester.</param>
+        /// <param name="receiverUserId">User ID of the receiver.</param>
         public async Task AcceptFriendRequest(string requesterUserId, string receiverUserId)
         {
             var query = @"
@@ -305,6 +350,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { requesterUserId, receiverUserId });
         }
 
+        /// <summary>
+        /// Reacts to a post by adding or updating a reaction from the user.
+        /// </summary>
+        /// <param name="request">Request object containing post reaction details.</param>
+        /// <param name="userId">User ID of the reacting user.</param>
         public async Task ReactToPost(PostReactionRequest request, string userId)
         {
             var query = @"
@@ -329,6 +379,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { userId, request.ReactionType, request.PostId, Timestamp = DateTime.UtcNow });
         }
 
+        /// <summary>
+        /// Adds a comment on a specific post.
+        /// </summary>
+        /// <param name="request">Request object containing post comment details.</param>
+        /// <param name="userId">User ID of the commenting user.</param>
         public async Task CommentOnPost(PostCommentRequest request, string userId)
         {
             var query = @"
@@ -348,6 +403,11 @@ namespace TradeHarborApi.Repositories
             await connection.QueryAsync(query, new { request.PostId, request.Comment, userId, Timestamp = DateTime.UtcNow });
         }
 
+        /// <summary>
+        /// Retrieves comments for a specific post.
+        /// </summary>
+        /// <param name="postId">ID of the post to retrieve comments for.</param>
+        /// <returns>An enumerable collection of post comments.</returns>
         public async Task<IEnumerable<PostComment>> GetCommentsForPost(string postId)
         {
             var query = @"

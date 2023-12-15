@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using TradeHarborApi.Models;
+﻿using TradeHarborApi.Models;
 using TradeHarborApi.Models.Notification;
 using TradeHarborApi.Models.Post;
 using TradeHarborApi.Models.PostFeatures;
@@ -42,7 +41,7 @@ namespace TradeHarborApi.Services
             var userId = _authService.GetUserIdFromJwt();
             var tradePosts = await _socialRepository.GetTrades(userId);
 
-            // Use the connection worker pool to gather comments for posts
+             // Use the connection worker pool to gather comments for posts
             await Task.WhenAll(tradePosts.Select(async post =>
             {
                 post.Comments = await _socialRepository.GetCommentsForPost(post.TradeId);

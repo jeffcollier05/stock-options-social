@@ -9,8 +9,8 @@ GO
 -- =============================================
 CREATE PROCEDURE dbo.CreateTradePost 
 	@UserId nvarchar(450),
-	@Position int,
-	@Option int,
+	@Position varchar(10),
+	@Option varchar(10),
 	@Ticker varchar(4),
 	@Strikeprice decimal(18, 0),
 	@Comment varchar(1000),

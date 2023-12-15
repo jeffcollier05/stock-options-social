@@ -7,8 +7,7 @@ GO
 -- Create date: 12/13/2023
 -- Description:	Get comments for a post
 -- =============================================
-CREATE PROCEDURE dbo.GetCommentsForPost
-	@UserID nvarchar(450),
+ALTER PROCEDURE dbo.GetCommentsForPost
 	@PostId int
 AS
 BEGIN

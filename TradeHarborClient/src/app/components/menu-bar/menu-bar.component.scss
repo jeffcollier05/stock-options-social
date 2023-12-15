@@ -14,19 +14,26 @@ $menu-bar-hover-color: #2e2e2e;
 }
 
 .logo-container {
-    height: 100px;
+    height: 150px;
     display: flex;
     justify-content: center;
     align-items: center;
 
     span {
         color: $text-color;
+        font-size: 26px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
     }
 }
 
 .menu-container {
     display: flex;
     flex-direction: column;
+    margin-left: 22px;
+    
+    span {
+        font-size: 15px;
+    }
 }
 
 .menu-button {

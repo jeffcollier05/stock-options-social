@@ -120,4 +120,12 @@ export class FriendsDialogComponent implements OnInit {
       }
     });
   }
+
+  public haveAtLeastOneFriend(): boolean {
+    return this.users.find(x => x.userProfile.isFriend) != undefined;
+  }
+
+  public haveAtLeastOneFriendRequest(): boolean {
+    return this.users.find(x => x.userProfile.sentFriendRequestToYou) != undefined;
+  }
 }

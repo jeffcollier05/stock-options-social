@@ -462,5 +462,21 @@ namespace TradeHarborApi.Repositories
             var comments = await connection.QueryAsync<PostComment>(procedure, new { postId }, commandType: CommandType.StoredProcedure );
             return comments;
         }
+
+        /// <summary>
+        /// Retrieves user statistics based on the specified user ID.
+        /// </summary>
+        /// <param name="userId">The unique identifier of the user.</param>
+        /// <returns>
+        /// An asynchronous task that represents the operation and returns a <see cref="UserStatistics"/>.
+        /// </returns>
+        public async Task<UserStatistics> GetUserStatistics(string userId)
+        {
+            var procedure = "dbo.GetUserStatistics";
+
+            using var connection = GetSqlConnection();
+            var statistics = await connection.QueryAsync<UserStatistics>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
+            return statistics.Single();
+        }
     }
 }

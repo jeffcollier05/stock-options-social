@@ -42,3 +42,8 @@ $action-bar-height: 500px;
     font-weight: bold;
     color: gray;
 }
+
+.statistics-container {
+    display: flex;
+    flex-direction: column;
+}

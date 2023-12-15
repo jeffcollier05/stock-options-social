@@ -181,5 +181,18 @@ namespace TradeHarborApi.Services
             // Alert post owner that comment was left
             await _notificationService.NotifyCommentOnPost(request.PostOwnerUserId);
         }
+
+        /// <summary>
+        /// Retrieves user statistics for the currently authenticated user.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous task that represents the operation and returns a <see cref="UserStatistics"/>.
+        /// </returns>
+        internal async Task<UserStatistics> GetUserStatistics()
+        {
+            var userId = _authService.GetUserIdFromJwt();
+            var statistics = await _socialRepository.GetUserStatistics(userId);
+            return statistics;
+        }
     }
 }

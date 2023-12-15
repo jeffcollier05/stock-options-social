@@ -7,4 +7,10 @@
     <div class="body-wrapper">
         <button mat-raised-button color="accent" (click)="openCreatePostDialog()">Create Post</button>
     </div>
+    <div class="statistics-container">
+        <span>Friend Count: {{userStatistics.friendCount}}</span>
+        <span>Post Count: {{userStatistics.postCount}}</span>
+        <span>Upvote Karma: {{userStatistics.upvotes}}</span>
+        <span>Downvote Karma: {{userStatistics.downvotes}}</span>
+    </div>
 </div>

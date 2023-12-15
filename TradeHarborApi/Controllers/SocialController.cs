@@ -195,5 +195,18 @@ namespace TradeHarborApi.Controllers
             await _socialService.CommentOnPost(request);
             return Ok();
         }
+
+        /// <summary>
+        /// Retrieves user statistics for the currently authenticated user.
+        /// </summary>
+        /// <returns>
+        /// An asynchronous task that represents the operation and returns a <see cref="UserStatistics"/>.
+        /// </returns>
+        [HttpGet]
+        public async Task<UserStatistics> GetUserStatistics()
+        {
+            var statistics = await _socialService.GetUserStatistics();
+            return statistics;
+        }
     }
 }

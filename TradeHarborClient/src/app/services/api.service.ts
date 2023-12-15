@@ -15,6 +15,7 @@ import { AcceptFriendRequestRequest } from '../models/acceptFriendRequestRequest
 import { DeclineFriendRequestRequest } from '../models/declineFriendRequestRequest';
 import { PostReactionRequest } from '../models/postReactionRequest';
 import { PostCommentRequest } from '../models/postCommentRequest';
+import { UserStatistics } from '../models/userStatistics';
 
 @Injectable({
   providedIn: 'root'
@@ -72,6 +73,10 @@ export class ApiService {
 
   public commentOnPost(request: PostCommentRequest): Observable<void | ErrorViewModel> {
     return this.httpPost<void>('social/CommentOnPost', request);
+  }
+
+  public getUserStatistics(): Observable<UserStatistics | ErrorViewModel> {
+    return this.httpGet<UserStatistics>('social/GetUserStatistics');
   }
  
   // Wrapper for GET requests

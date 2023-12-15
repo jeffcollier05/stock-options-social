@@ -71,12 +71,14 @@ export class FeedViewComponent {
       month: 'numeric',
       day: 'numeric',
       year: 'numeric',
+      timeZone: 'UTC'
     };
 
     const timeOptions = {
       hour: 'numeric',
       minute: 'numeric',
       hour12: true,
+      timeZone: 'UTC'
     };
 
     var date = dateTimestamp.toLocaleString('en-US', dateOptions as Intl.DateTimeFormatOptions);

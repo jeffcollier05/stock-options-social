@@ -1,16 +1,18 @@
 @import '../../../styles.scss';
 
 $text-color: white;
-$menu-bar-color: #1a1a1a;
+$menu-bar-color: #1b2730;
 $menu-bar-hover-color: #2e2e2e;
 
 .menu-bar-div {
     background-color: $menu-bar-color;
     width: $menu-bar-width;
-    height: 100%;
-    position: fixed;
+    height: 94vh;
+    position: absolute;
     left: 0;
     top: 0;
+    border-radius: 30px;
+    margin: 20px 0px 60px 20px;
 }
 
 .logo-container {

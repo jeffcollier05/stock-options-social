@@ -8,11 +8,9 @@
                     <span class="username-span">&commat;{{view.tradePost.username}}</span>
                     <span>&#8226; {{getLapsedTime(view.tradePost.timestamp)}}</span>
                 </div>
-
                 <div class="comment-container">
                     <span>{{view.tradePost.comment}}</span>
                 </div>
-    
                 <div class="post-content">
                     <div class="info-pod">
                         <span class="info-line">{{view.tradePost.ticker | uppercase}}</span>
@@ -31,16 +29,10 @@
                         <span class="info-header">Option</span>
                     </div>
                 </div>
-                
-
                 <div class="vote-container">
                     <span>Community says {{view.tradePost.votes >= 0 ? '+': ''}}{{view.tradePost.votes}}</span>
                     <span class="span-button" (click)="toggleShowComments(view)">View {{view.tradePost.comments.length}} comment{{view.tradePost.comments.length > 1 ? 's' : ''}}</span>
                 </div>
-
-                
-
-
                 <div class="voting-container">
                     <button class="action-button" (click)="reactToPost(view.tradePost, 'UPVOTE')" [ngClass]="{'upvote': view.tradePost.userReaction == 'UPVOTE'}">
                         <span class="material-symbols-outlined google-icon">thumb_up</span>
@@ -55,7 +47,6 @@
                         <span>Comment</span>
                     </button>
                 </div>
-
                 <div *ngIf="view.showWriteComment" class="write-comment-wrapper">
                     <textarea class="comment-text-area" matInput placeholder="What's your thoughts?" rows="2" [(ngModel)]="view.writeComment"></textarea>
                     <div>
@@ -67,33 +58,17 @@
                                 <span *ngIf="!view.writeCommentWaiting">Comment</span>
                                 <mat-spinner *ngIf="view.writeCommentWaiting" diameter="30"></mat-spinner>
                         </button>
-                    
                     </div> 
                 </div>
-
                 <div *ngIf="view.showComments" class="comments-container">
                     <div *ngFor="let postComment of view.tradePost.comments" class="user-comment-container">
                         <span class="user-comment">&commat;{{postComment.username}}: {{postComment.comment}}</span>
                     </div>
                 </div>
-
-                
                 <div class="timestamp-container">
                     <span>{{getDateAndTime(view.tradePost.timestamp)}}</span>
                 </div>
-    
             </div>
-
-            <!-- <button
-                mat-raised-button color="warn"
-                (click)="deleteTradePost(view)"
-                *ngIf="isUserPost(view.tradePost)"
-                class="delete-button"
-                [disabled]="view.deleteWaiting"
-            >
-                <span *ngIf="!view.deleteWaiting">X</span>
-                <mat-spinner *ngIf="view.deleteWaiting" diameter="20"></mat-spinner>
-            </button> -->
         </div>
     </div>
 </div>

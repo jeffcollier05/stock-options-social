@@ -11,15 +11,21 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./create-post-dialog.component.scss']
 })
 export class CreatePostDialogComponent {
+  /** The request object for creating a trade post. */
   public createTradePostRequest = new CreateTradePostRequest();
+
+  /** Indicates whether the component is waiting for the create post operation. */
   public createPostWaiting: boolean = false;
 
   constructor(
     private apiService: ApiService,
     private dialogRef: MatDialogRef<CreatePostDialogComponent>,
     private snackbar: MatSnackBar
-    ) { }
+  ) { }
 
+  /**
+   * Creates a new trade post.
+   */
   public createTradePost(): void {
     this.createPostWaiting = true;
     this.apiService.createTradePost(this.createTradePostRequest).subscribe(resp => {
@@ -30,5 +36,4 @@ export class CreatePostDialogComponent {
       }
     });
   }
-  
 }

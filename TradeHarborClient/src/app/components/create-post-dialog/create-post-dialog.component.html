@@ -1,4 +1,4 @@
-<div class="dialog-container">
+<div>
     <mat-form-field>
         <mat-label>Select Position</mat-label>
         <mat-select [(ngModel)]="createTradePostRequest.position">
@@ -37,5 +37,4 @@
             <span *ngIf="!createPostWaiting">Create Post</span>
             <mat-spinner *ngIf="createPostWaiting" diameter="30"></mat-spinner>
     </button>
-      
 </div>

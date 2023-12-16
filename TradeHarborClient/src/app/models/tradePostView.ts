@@ -5,4 +5,6 @@ export class TradePostView {
     deleteWaiting: boolean = false;
     writeComment: string = '';
     writeCommentWaiting: boolean = false;
+    showWriteComment: boolean = false;
+    showComments: boolean = false;
 }

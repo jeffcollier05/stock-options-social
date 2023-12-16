@@ -22,6 +22,7 @@
     display: flex;
     flex-direction: column;
     padding: 20px;
+    color: #ffffff;
 }
 
 .profile-picture {
@@ -58,6 +59,9 @@
 
 .post-content {
     display: flex;
+    margin-top: 20px;
+    width: 100%;
+    justify-content: space-around;
 }
 
 .comment-container {
@@ -87,6 +91,10 @@
 .vote-container {
     display: flex;
     align-items: center;
+    // background-color: red;
+    width: 100%;
+    justify-content: space-between;
+    margin: 30px 0px 10px 0px;
 }
 
 .vote-arrow-container {
@@ -117,15 +125,107 @@
 }
 
 .upvote {
-    background-color: green;
+    background-color: rgb(69, 126, 69) !important;
     @extend .vote-hover;
 }
 
 .downvote {
-    background-color: red;
+    background-color: rgb(136, 52, 52) !important;
     @extend .vote-hover;
 }
 
 .write-comment-container {
-    width: 300px;
+    // width: 300px;
+    width: 100%;
+}
+
+.write-comment-wrapper {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.action-button {
+    background-color: #28343e;
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    // width: 200px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    // margin-right: 10px;
+    flex: 1;
+
+    &:hover {
+        background-color: #364755;
+    }
+}
+
+.center-action-button {
+    margin: 0px 7px;
+}
+
+.google-icon {
+    margin: 0px 10px 0px 0px;
+}
+
+.voting-container {
+    display: inline-flex;
+    // background-color: red;
+}
+
+.info-header {
+    font-size: 14px;
+    color: #758391;
+    margin-top: 8px;
+}
+
+.info-line {
+    font-size: 18px;
+    color: #bde1ff;
+}
+
+.info-pod {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    // margin-right: 100px;
+}
+
+.span-button {
+    cursor: pointer;
+}
+
+.comments-container {
+    margin: 30px 0px 0px 0px;
+}
+
+.user-comment-container {
+    background-color: #28343e;
+    border-radius: 20px;
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.user-comment {
+    margin: 5px 15px;
+}
+
+
+.comment-text-area {
+    background-color: #28343e;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 20px 0px 0px 20px;
+    font-size: 16px;
+}
+
+
+::placeholder {
+    color: #ffffff !important;
 }

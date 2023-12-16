@@ -8,64 +8,83 @@
                     <span class="username-span">&commat;{{view.tradePost.username}}</span>
                     <span>&#8226; {{getLapsedTime(view.tradePost.timestamp)}}</span>
                 </div>
+
+                <div class="comment-container">
+                    <span>{{view.tradePost.comment}}</span>
+                </div>
     
                 <div class="post-content">
-                    <div class="post-content-column">
-                        <span>Ticker: {{view.tradePost.ticker}}</span>
-                        <span>Position: {{view.tradePost.position}}</span>
+                    <div class="info-pod">
+                        <span class="info-line">{{view.tradePost.ticker | uppercase}}</span>
+                        <span class="info-header">Ticker</span>
                     </div>
-                    <div class="post-content-column">
-                        <span>Strikeprice: {{view.tradePost.strikeprice}}</span>
-                        <span>Option: {{view.tradePost.option}}</span>
+                    <div class="info-pod">
+                        <span class="info-line">{{view.tradePost.strikeprice}}</span>
+                        <span class="info-header">Strikeprice</span>
+                    </div>
+                    <div class="info-pod">
+                        <span class="info-line">{{view.tradePost.position}}</span>
+                        <span class="info-header">Position</span>
+                    </div>
+                    <div class="info-pod">
+                        <span class="info-line">{{view.tradePost.option}}</span>
+                        <span class="info-header">Option</span>
                     </div>
                 </div>
                 
-                <div class="comment-container">
-                    <span>Comment: {{view.tradePost.comment}}</span>
-                </div>
 
                 <div class="vote-container">
-                    <div
-                        class="vote-arrow-container"
-                        [ngClass]="{'upvote': view.tradePost.userReaction == 'UPVOTE'}"
-                        (click)="reactToPost(view.tradePost, 'UPVOTE')"
-                    >
-                        <mat-icon>keyboard_arrow_up</mat-icon>
-                    </div>
-                    <span>{{view.tradePost.votes}}</span>
-                    <div
-                        class="vote-arrow-container"
-                        [ngClass]="{'downvote': view.tradePost.userReaction == 'DOWNVOTE'}"
-                        (click)="reactToPost(view.tradePost, 'DOWNVOTE')"
-                    >
-                        <mat-icon>keyboard_arrow_down</mat-icon>
-                    </div>
+                    <span>Community says {{view.tradePost.votes >= 0 ? '+': ''}}{{view.tradePost.votes}}</span>
+                    <span class="span-button" (click)="toggleShowComments(view)">View {{view.tradePost.comments.length}} comment{{view.tradePost.comments.length > 1 ? 's' : ''}}</span>
                 </div>
 
-                <div>
-                    <mat-form-field appearance="fill" class="write-comment-container">
-                        <textarea matInput placeholder="Write comment" rows="2" [(ngModel)]="view.writeComment"></textarea>
-                    </mat-form-field>
-                    <button
-                        mat-raised-button
-                        color="accent"
-                        (click)="commentOnPost(view)"
-                        [disabled]="view.writeCommentWaiting">
-                            <span *ngIf="!view.writeCommentWaiting">Comment</span>
-                            <mat-spinner *ngIf="view.writeCommentWaiting" diameter="30"></mat-spinner>
+                
+
+
+                <div class="voting-container">
+                    <button class="action-button" (click)="reactToPost(view.tradePost, 'UPVOTE')" [ngClass]="{'upvote': view.tradePost.userReaction == 'UPVOTE'}">
+                        <span class="material-symbols-outlined google-icon">thumb_up</span>
+                        <span>Upvote</span>
                     </button>
+                    <button class="action-button center-action-button" (click)="reactToPost(view.tradePost, 'DOWNVOTE')" [ngClass]="{'downvote': view.tradePost.userReaction == 'DOWNVOTE'}">
+                        <span class="material-symbols-outlined google-icon">thumb_down</span>
+                        <span>Downvote</span>
+                    </button>
+                    <button class="action-button" (click)="toggleWriteComment(view)">
+                        <span class="material-symbols-outlined google-icon">comment</span>
+                        <span>Comment</span>
+                    </button>
+                </div>
 
-                    <div *ngFor="let postComment of view.tradePost.comments">
-                        <span>&commat;{{postComment.username}}: {{postComment.comment}}</span>
+                <div *ngIf="view.showWriteComment" class="write-comment-wrapper">
+                    <textarea class="comment-text-area" matInput placeholder="What's your thoughts?" rows="2" [(ngModel)]="view.writeComment"></textarea>
+                    <div>
+                        <button
+                            mat-raised-button
+                            color="accent"
+                            (click)="commentOnPost(view)"
+                            [disabled]="view.writeCommentWaiting">
+                                <span *ngIf="!view.writeCommentWaiting">Comment</span>
+                                <mat-spinner *ngIf="view.writeCommentWaiting" diameter="30"></mat-spinner>
+                        </button>
+                    
+                    </div> 
+                </div>
+
+                <div *ngIf="view.showComments" class="comments-container">
+                    <div *ngFor="let postComment of view.tradePost.comments" class="user-comment-container">
+                        <span class="user-comment">&commat;{{postComment.username}}: {{postComment.comment}}</span>
                     </div>
                 </div>
+
                 
                 <div class="timestamp-container">
                     <span>{{getDateAndTime(view.tradePost.timestamp)}}</span>
                 </div>
     
             </div>
-            <button
+
+            <!-- <button
                 mat-raised-button color="warn"
                 (click)="deleteTradePost(view)"
                 *ngIf="isUserPost(view.tradePost)"
@@ -74,7 +93,7 @@
             >
                 <span *ngIf="!view.deleteWaiting">X</span>
                 <mat-spinner *ngIf="view.deleteWaiting" diameter="20"></mat-spinner>
-            </button>
+            </button> -->
         </div>
     </div>
 </div>

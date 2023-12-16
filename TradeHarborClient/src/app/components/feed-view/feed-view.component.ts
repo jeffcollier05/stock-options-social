@@ -35,7 +35,9 @@ export class FeedViewComponent {
             tradePost: post,
             deleteWaiting: false,
             writeComment: '',
-            writeCommentWaiting: false
+            writeCommentWaiting: false,
+            showWriteComment: false,
+            showComments: false
           }
         ));
         this.tradePosts = tradePostViews;
@@ -54,13 +56,13 @@ export class FeedViewComponent {
     var days = Math.floor(hours / 24);
 
     if (seconds < 60) {
-      return `${seconds}s`;
+      return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
     } else if (minutes < 60) {
-      return `${minutes}m`;
+      return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
     } else if (hours < 24) {
-      return `${hours}h`;
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`;
     } else {
-      return `${days}d`;
+      return `${days} day${days > 1 ? 's' : ''} ago`;
     }
   }
 
@@ -166,5 +168,13 @@ export class FeedViewComponent {
         //todo
       }
     });
+  }
+
+  public toggleWriteComment(view: TradePostView): void {
+    view.showWriteComment = !view.showWriteComment;
+  }
+
+  public toggleShowComments(view: TradePostView): void {
+    view.showComments = !view.showComments;
   }
 }

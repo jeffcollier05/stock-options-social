@@ -223,9 +223,15 @@
     border-radius: 10px;
     padding: 20px 0px 0px 20px;
     font-size: 16px;
+    @extend .arial-family;
 }
 
 
 ::placeholder {
     color: #ffffff !important;
+    @extend .arial-family;
+}
+
+.arial-family {
+    font-family: Arial, Helvetica, sans-serif;
 }

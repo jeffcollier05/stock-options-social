@@ -17,11 +17,16 @@ import { PostReactionRequest } from '../models/social-requests/postReactionReque
 import { PostCommentRequest } from '../models/social-requests/postCommentRequest';
 import { UserStatistics } from '../models/api-responses/userStatistics';
 
+/**
+ * Service for handling API requests.
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   public getTradePosts(): Observable<TradePost[] | ErrorViewModel> {
     return this.httpGet<TradePost[]>('social/gettrades');
@@ -79,7 +84,9 @@ export class ApiService {
     return this.httpGet<UserStatistics>('social/GetUserStatistics');
   }
  
-  // Wrapper for GET requests
+  /**
+   * Http GET wrapper method for API calls.
+   */
   httpGet<T>(endpoint: string): Observable<T | ErrorViewModel> {
     const url = `${environment.apiUrl}/${endpoint}`;
     return this.http.get<T>(url).pipe(
@@ -87,7 +94,9 @@ export class ApiService {
     );
   }
 
-  // Wrapper for POST requests
+  /**
+   * Http POST wrapper method for API calls.
+   */
   httpPost<T>(endpoint: string, data: any): Observable<T | ErrorViewModel>{
     const url = `${environment.apiUrl}/${endpoint}`;
     return this.http.post<T>(url, data).pipe(
@@ -95,7 +104,9 @@ export class ApiService {
     );
   }
 
-  // Handles errors for requests
+  /**
+   * Handles errors from API calls.
+   */
   private handleError(error: HttpErrorResponse): Observable<ErrorViewModel> {
     var message: string;
     var details: string;

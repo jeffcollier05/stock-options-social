@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ErrorViewModel } from 'src/app/models/errorViewModel';
+import { ErrorViewModel } from 'src/app/models/api-responses/errorViewModel';
 import { ApiService } from 'src/app/services/api.service';
-import { Notification } from 'src/app/models/notification';
-import { DeleteNotificationRequest } from 'src/app/models/deleteNotificationRequest';
-import { NotificationView } from 'src/app/models/notificationView';
+import { Notification } from 'src/app/models/api-responses/notification';
+import { DeleteNotificationRequest } from 'src/app/models/social-requests/deleteNotificationRequest';
+import { NotificationView } from 'src/app/models/view-models/notificationView';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/app/services/data.service';
 import { Subscription } from 'rxjs';

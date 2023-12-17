@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Register } from '../models/register';
-import { JwtAuth } from '../models/jwtAuth';
-import { Login } from '../models/login';
-import { ErrorViewModel } from '../models/errorViewModel';
+import { Register } from '../models/auth-requests/register';
+import { JwtAuth } from '../models/auth-responses/jwtAuth';
+import { Login } from '../models/auth-requests/login';
+import { ErrorViewModel } from '../models/api-responses/errorViewModel';
 import { ApiService } from './api.service';
 import { jwtDecode } from 'jwt-decode';
-import { ActiveUser } from '../models/activeUser';
+import { ActiveUser } from '../models/api-responses/activeUser';
 
 @Injectable({
   providedIn: 'root'

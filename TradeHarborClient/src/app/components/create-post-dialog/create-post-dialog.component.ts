@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CreateTradePostRequest } from 'src/app/models/createTradePostRequest';
-import { ErrorViewModel } from 'src/app/models/errorViewModel';
+import { CreateTradePostRequest } from 'src/app/models/social-requests/createTradePostRequest';
+import { ErrorViewModel } from 'src/app/models/api-responses/errorViewModel';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({

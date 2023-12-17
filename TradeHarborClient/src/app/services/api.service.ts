@@ -1,21 +1,21 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { TradePost } from '../models/tradePost';
+import { TradePost } from '../models/api-responses/tradePost';
 import { Observable, catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ErrorViewModel } from '../models/errorViewModel';
-import { CreateTradePostRequest } from '../models/createTradePostRequest';
-import { ModifyFriendPairRequest } from '../models/modifyFriendPairRequest';
-import { DeleteTradePostRequest } from '../models/deleteTradePostRequest';
-import { Notification } from 'src/app/models/notification';
-import { DeleteNotificationRequest } from '../models/deleteNotificationRequest';
-import { CreateFriendRequestRequest } from '../models/createFriendRequestRequest';
-import { UserProfile } from '../models/userProfile';
-import { AcceptFriendRequestRequest } from '../models/acceptFriendRequestRequest';
-import { DeclineFriendRequestRequest } from '../models/declineFriendRequestRequest';
-import { PostReactionRequest } from '../models/postReactionRequest';
-import { PostCommentRequest } from '../models/postCommentRequest';
-import { UserStatistics } from '../models/userStatistics';
+import { ErrorViewModel } from '../models/api-responses/errorViewModel';
+import { CreateTradePostRequest } from '../models/social-requests/createTradePostRequest';
+import { ModifyFriendPairRequest } from '../models/social-requests/modifyFriendPairRequest';
+import { DeleteTradePostRequest } from '../models/social-requests/deleteTradePostRequest';
+import { Notification } from 'src/app/models/api-responses/notification';
+import { DeleteNotificationRequest } from '../models/social-requests/deleteNotificationRequest';
+import { CreateFriendRequestRequest } from '../models/social-requests/createFriendRequestRequest';
+import { UserProfile } from '../models/api-responses/userProfile';
+import { AcceptFriendRequestRequest } from '../models/social-requests/acceptFriendRequestRequest';
+import { DeclineFriendRequestRequest } from '../models/social-requests/declineFriendRequestRequest';
+import { PostReactionRequest } from '../models/social-requests/postReactionRequest';
+import { PostCommentRequest } from '../models/social-requests/postCommentRequest';
+import { UserStatistics } from '../models/api-responses/userStatistics';
 
 @Injectable({
   providedIn: 'root'

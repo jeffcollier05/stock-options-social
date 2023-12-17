@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { delay, of } from 'rxjs';
-import { ErrorViewModel } from 'src/app/models/errorViewModel';
-import { JwtAuth } from 'src/app/models/jwtAuth';
-import { Login } from 'src/app/models/login';
+import { ErrorViewModel } from 'src/app/models/api-responses/errorViewModel';
+import { JwtAuth } from 'src/app/models/auth-responses/jwtAuth';
+import { Login } from 'src/app/models/auth-requests/login';
 import { AuthenticationService } from 'src/app/services/authentication.services';
 
 @Component({

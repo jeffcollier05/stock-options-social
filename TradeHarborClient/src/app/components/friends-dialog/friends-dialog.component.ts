@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
-import { AcceptFriendRequestRequest } from 'src/app/models/acceptFriendRequestRequest';
-import { CreateFriendRequestRequest } from 'src/app/models/createFriendRequestRequest';
-import { DeclineFriendRequestRequest } from 'src/app/models/declineFriendRequestRequest';
-import { ErrorViewModel } from 'src/app/models/errorViewModel';
-import { ModifyFriendPairRequest } from 'src/app/models/modifyFriendPairRequest';
-import { UserProfileView } from 'src/app/models/userProfileView';
+import { AcceptFriendRequestRequest } from 'src/app/models/social-requests/acceptFriendRequestRequest';
+import { CreateFriendRequestRequest } from 'src/app/models/social-requests/createFriendRequestRequest';
+import { DeclineFriendRequestRequest } from 'src/app/models/social-requests/declineFriendRequestRequest';
+import { ErrorViewModel } from 'src/app/models/api-responses/errorViewModel';
+import { ModifyFriendPairRequest } from 'src/app/models/social-requests/modifyFriendPairRequest';
+import { UserProfileView } from 'src/app/models/view-models/userProfileView';
 import { ApiService } from 'src/app/services/api.service';
 import { DataService } from 'src/app/services/data.service';
 

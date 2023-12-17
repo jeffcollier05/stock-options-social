@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FriendsDialogComponent } from '../friends-dialog/friends-dialog.component';
 import { NotificationsDialogComponent } from '../notifications-dialog/notifications-dialog.component';
-import { Notification } from 'src/app/models/notification';
+import { Notification } from 'src/app/models/api-responses/notification';
 import { DataService } from 'src/app/services/data.service';
 import { Subscription } from 'rxjs';
 

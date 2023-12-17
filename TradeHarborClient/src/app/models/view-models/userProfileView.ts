@@ -1,4 +1,4 @@
-import { UserProfile } from "./userProfile";
+import { UserProfile } from "../api-responses/userProfile";
 
 export class UserProfileView {
     userProfile: UserProfile = new UserProfile();

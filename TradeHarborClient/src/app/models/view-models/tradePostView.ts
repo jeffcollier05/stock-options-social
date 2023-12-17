@@ -1,4 +1,4 @@
-import { TradePost } from "./tradePost";
+import { TradePost } from "../api-responses/tradePost";
 
 export class TradePostView {
     tradePost: TradePost = new TradePost();

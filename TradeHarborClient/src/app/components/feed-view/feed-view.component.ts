@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { DeleteTradePostRequest } from 'src/app/models/deleteTradePostRequest';
-import { ErrorViewModel } from 'src/app/models/errorViewModel';
-import { PostCommentRequest } from 'src/app/models/postCommentRequest';
-import { PostReactionRequest } from 'src/app/models/postReactionRequest';
-import { TradePost } from 'src/app/models/tradePost';
-import { TradePostView } from 'src/app/models/tradePostView';
+import { DeleteTradePostRequest } from 'src/app/models/social-requests/deleteTradePostRequest';
+import { ErrorViewModel } from 'src/app/models/api-responses/errorViewModel';
+import { PostCommentRequest } from 'src/app/models/social-requests/postCommentRequest';
+import { PostReactionRequest } from 'src/app/models/social-requests/postReactionRequest';
+import { TradePost } from 'src/app/models/api-responses/tradePost';
+import { TradePostView } from 'src/app/models/view-models/tradePostView';
 import { ApiService } from 'src/app/services/api.service';
 import { AuthenticationService } from 'src/app/services/authentication.services';
 

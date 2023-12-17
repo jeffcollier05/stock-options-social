@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Notification } from 'src/app/models/notification';
-import { ErrorViewModel } from '../models/errorViewModel';
-import { UserProfile } from '../models/userProfile';
+import { Notification } from 'src/app/models/api-responses/notification';
+import { ErrorViewModel } from '../models/api-responses/errorViewModel';
+import { UserProfile } from '../models/api-responses/userProfile';
 
 @Injectable({
   providedIn: 'root'

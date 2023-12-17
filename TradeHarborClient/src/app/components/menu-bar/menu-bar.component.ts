@@ -1,10 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { FriendsDialogComponent } from '../friends-dialog/friends-dialog.component';
 import { NotificationsDialogComponent } from '../notifications-dialog/notifications-dialog.component';
-import { ApiService } from 'src/app/services/api.service';
-import { ErrorViewModel } from 'src/app/models/errorViewModel';
 import { Notification } from 'src/app/models/notification';
 import { DataService } from 'src/app/services/data.service';
 import { Subscription } from 'rxjs';
@@ -14,37 +12,55 @@ import { Subscription } from 'rxjs';
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.scss']
 })
-export class MenuBarComponent {
+export class MenuBarComponent implements OnInit, OnDestroy {
   
+  /** Array of notifications for the authenticated user. */
   public notifications: Notification[] = [];
-  private dataSubscription!: Subscription;
+
+  /** Subscription to notifications from the DataService. */
+  private notificationSubscription!: Subscription;
 
   constructor(
     private router: Router,
     private dialog: MatDialog,
-    private apiService: ApiService,
     private dataService: DataService
-    ) { }
+  ) { }
 
   ngOnInit(): void {
-    this.dataSubscription = this.dataService.notifications$.subscribe(notifications => {
+    this.subscribeToNotifications();
+  }
+
+  ngOnDestroy() {
+    this.notificationSubscription?.unsubscribe();
+  }
+
+  /**
+   * Subscribes to changes in notifications and updates the local notifications array.
+   */
+  private subscribeToNotifications(): void {
+    this.notificationSubscription = this.dataService.notifications$.subscribe(notifications => {
       this.notifications = notifications;
     });
   }
 
-  ngOnDestroy() {
-    this.dataSubscription?.unsubscribe();
-  }
-
+  /**
+   * Logs out the user and navigates to the login page.
+   */
   public logout(): void {
     localStorage.removeItem('jwtToken');
     this.router.navigate(['/login']);
   }
 
+  /**
+   * Opens the friends dialog.
+   */
   public openFriendsDialog(): void {
     this.dialog.open(FriendsDialogComponent);
   }
 
+  /**
+   * Opens the notifications dialog.
+   */
   public openNotificationsDialog(): void {
     this.dialog.open(NotificationsDialogComponent);
   }

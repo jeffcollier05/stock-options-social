@@ -1,0 +1,61 @@
+@import '../../../styles.scss';
+
+$text-color: white;
+$menu-bar-color: #1b2730;
+$menu-bar-hover-color: #2e2e2e;
+
+.menu-bar-div {
+    background-color: $menu-bar-color;
+    width: $menu-bar-width;
+    height: 94vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-radius: 30px;
+    margin: 20px 0px 60px 20px;
+}
+
+.logo-container {
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+        color: $text-color;
+        font-size: 26px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
+    }
+}
+
+.menu-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 22px;
+    
+    span {
+        font-size: 15px;
+    }
+}
+
+.menu-button {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    width: 100%;
+    height: 50px;
+    border: 0px;
+    border-radius: 12px;
+    color: $text-color;
+    background-color: transparent;
+    transition: background-color 0.5s ease;
+    cursor: pointer;
+
+    &:hover {
+        background-color: $menu-bar-hover-color;
+    }
+}
+
+.menu-icon-wrapper {
+    width: 40px;
+}

@@ -1,0 +1,47 @@
+<div class="menu-bar-div">
+    <div class="logo-container">
+        <span>TradeHarbor</span>
+    </div>
+    <div class="menu-container">
+        <button class="menu-button">
+            <div class="menu-icon-wrapper">
+                <mat-icon>home</mat-icon>
+            </div>
+            <span>Home</span>
+        </button>
+        <button class="menu-button">
+            <div class="menu-icon-wrapper">
+                <mat-icon>search</mat-icon>
+            </div>
+            <span>Search</span>
+        </button>
+        <button class="menu-button">
+            <div class="menu-icon-wrapper">
+                <mat-icon>message</mat-icon>
+            </div>
+            <span>Messages</span>
+        </button>
+        <button class="menu-button" (click)="openNotificationsDialog()">
+            <div class="menu-icon-wrapper">
+                <mat-icon>notifications</mat-icon>
+            </div>
+            <span
+                [matBadge]="notifications.length"
+                matBadgeOverlap="false"
+                [matBadgeHidden]="notifications.length == 0 ? 'true' : 'false'"
+            >Notifications</span>
+        </button>
+        <button class="menu-button" (click)="openFriendsDialog()">
+            <div class="menu-icon-wrapper">
+                <mat-icon>person</mat-icon>
+            </div>
+            <span>Friends</span>
+        </button>
+        <button class="menu-button" (click)="logout()">
+            <div class="menu-icon-wrapper">
+                <mat-icon>transit_enterexit</mat-icon>
+            </div>
+            <span>Log Out</span>
+        </button>
+    </div>
+</div>

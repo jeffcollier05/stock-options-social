@@ -1,0 +1,60 @@
+<div class="action-bar-container">
+    <div>
+        <div class="background-picture-container">
+            <img src="https://cdn.zeebiz.com/sites/default/files/2022/04/20/180396-istockphoto-1251629783-640x640.jpg" class="background-picture">
+        </div>
+        <div class="profile-picture-container">
+            <img class="profile-picture" src="{{activeUser.profilePictureUrl}}">
+        </div>
+    </div>
+    <div class="active-user-container">
+        <span class="name-span">{{activeUser.firstName}} {{activeUser.lastName}}</span>
+        <span class="username-span">&commat;{{activeUser.username}}</span>
+    </div>
+    <div class="body-wrapper">
+        <button mat-raised-button color="accent" (click)="openCreatePostDialog()">Create Post</button>
+    </div>
+    <div class="statistics-container">
+        <div class="stat-container">
+            <div class="stat-box-top stat-box-left">
+                <span class="stat-count">{{userStatistics.friendCount}}</span>
+                <span class="stat-info">Friends</span>
+            </div>
+            <div class="stat-box-top">
+                <span class="stat-count">{{userStatistics.postCount}}</span>
+                <span class="stat-info">Posts</span>
+            </div>
+        </div>
+        <div class="stat-container">
+            <div class="stat-box-bottom stat-box-left">
+                <span class="stat-count">{{userStatistics.upvotes}}</span>
+                <span class="stat-info">Upvotes</span>
+            </div>
+            <div class="stat-box-bottom">
+                <span class="stat-count">{{userStatistics.downvotes}}</span>
+                <span class="stat-info">Downvotes</span>
+            </div>
+        </div>
+    </div>
+    <div class="profile-link-container">
+        <span>My Profile</span>
+    </div>
+</div>
+
+<div class="users-container">
+    <div class="users-header-container">
+        <span class="users-header">You might know</span>
+    </div>
+    <div *ngFor="let user of users" class="friends-container">
+        <div class="friend-container">
+            <img class="users-profile-picture" src="{{user.profilePictureUrl}}">
+            <div class="users-name-container">
+                <span class="users-username-span">&commat;{{user.username}}</span>
+                <span class="users-name-span">{{user.firstName}} {{user.lastName}}</span>
+            </div>
+            <button class="add-button">
+                <span>Friend</span>
+            </button>
+        </div>
+    </div>
+</div>

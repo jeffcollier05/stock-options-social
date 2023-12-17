@@ -1,0 +1,40 @@
+<div>
+    <mat-form-field>
+        <mat-label>Select Position</mat-label>
+        <mat-select [(ngModel)]="createTradePostRequest.position">
+            <mat-option value="LONG">LONG</mat-option>
+            <mat-option value="SHORT">SHORT</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Select Option</mat-label>
+        <mat-select [(ngModel)]="createTradePostRequest.option">
+            <mat-option value="CALL">CALL</mat-option>
+            <mat-option value="PUT">PUT</mat-option>
+        </mat-select>
+    </mat-form-field>
+    
+    <mat-form-field>
+        <mat-label>Strikeprice</mat-label>
+        <input matInput [(ngModel)]="createTradePostRequest.strikeprice">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Ticker</mat-label>
+        <input matInput  [(ngModel)]="createTradePostRequest.ticker">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <textarea matInput placeholder="Write comment" rows="5" [(ngModel)]="createTradePostRequest.comment"></textarea>
+    </mat-form-field>
+
+    <button
+        mat-raised-button
+        color="accent"
+        (click)="createTradePost()"
+        [disabled]="createPostWaiting">
+            <span *ngIf="!createPostWaiting">Create Post</span>
+            <mat-spinner *ngIf="createPostWaiting" diameter="30"></mat-spinner>
+    </button>
+</div>

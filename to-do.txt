@@ -1,0 +1,10 @@
+BACKEND:
+Log in / account microservice
+Feed microservice
+
+
+
+FRONT END:
+Feed view
+Account creation screen
+Json web token verifcation

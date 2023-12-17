@@ -1,0 +1,28 @@
+<div class="page">
+    <div class="form-container">
+        <h1>Login Account</h1>
+        <h2>
+            Email:
+            <input [(ngModel)]="loginDto.email">
+        </h2>
+        <h2>
+            Password:
+            <input [(ngModel)]="loginDto.password">
+        </h2>
+        <div *ngIf="!waitingOnResponse">
+            <span *ngIf="!successLogin" class="error-message">{{errorMessage}}</span>
+            <span *ngIf="successLogin" class="success-message">Successful login!</span>
+        </div>
+        <div>
+            <button
+                mat-raised-button 
+                color="accent" 
+                (click)="login(loginDto)" 
+                [disabled]="waitingOnResponse">
+                    <span *ngIf="!waitingOnResponse">Login</span>
+                    <mat-spinner *ngIf="waitingOnResponse" diameter="30"></mat-spinner>
+            </button>
+            <a (click)="goToRegisterPage()">Register an account</a>
+        </div>
+    </div>
+</div>

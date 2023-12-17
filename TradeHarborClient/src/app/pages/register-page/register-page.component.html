@@ -1,0 +1,44 @@
+<div class="page">
+    <div class="form-container">
+        <h1>Register Account</h1>
+        <h2>
+            Email:
+            <input [(ngModel)]="registerDto.email">
+        </h2>
+        <h2>
+            Username:
+            <input [(ngModel)]="registerDto.username">
+        </h2>
+        <h2>
+            Password:
+            <input [(ngModel)]="registerDto.password">
+        </h2>
+        <h2>
+            First Name:
+            <input [(ngModel)]="registerDto.firstName">
+        </h2>
+        <h2>
+            Last Name:
+            <input [(ngModel)]="registerDto.lastName">
+        </h2>
+        <h2>
+            Profile Picture Url:
+            <input [(ngModel)]="registerDto.profilePictureUrl">
+        </h2>
+        <div *ngIf="!waitingOnResponse">
+            <span *ngIf="!successRegister" class="error-message">{{errorMessage}}</span>
+            <span *ngIf="successRegister" class="success-message">Successful registration!</span>
+        </div>
+        <div>
+            <button
+                mat-raised-button
+                color="accent"
+                (click)="register(registerDto)"
+                [disabled]="waitingOnResponse">
+                    <span *ngIf="!waitingOnResponse">Register</span>
+                    <mat-spinner *ngIf="waitingOnResponse" diameter="30"></mat-spinner>
+            </button>
+            <a (click)="goToLoginPage()">Login to account</a>
+        </div>
+    </div>
+</div>

@@ -8,9 +8,18 @@
 Welcome to TradeHarbor, your go-to social hub for stock option enthusiasts and traders! StockCollab is a dynamic platform designed for individuals passionate about stock options, where traders and investors can come together to share insights, create comments, and collaborate on their trades.
 
 ## Table of Contents
-- [Features](#features)
-- [Demo](#demo)
 - [Technologies Used](#technologies-used)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Future Features](#future-features)
+
+## Technologies Used
+
+- Angular 10.0.0
+- ASP.NET Core 8.0
+- MSSQL
+- Entity Framework 8.0
+- Angular Material 15.0.0
 
 ## Features
 
@@ -39,18 +48,17 @@ Welcome to TradeHarbor, your go-to social hub for stock option enthusiasts and t
    - MSSQL database for efficient data storage and retrieval.
    - Custom-designed stored procedures to handle database operations.
 
-## Demo
+## Screenshots
 
-Provide a link or GIF/video demonstrating your application's functionality.
+Standard home screen:
+<img src="/Files/tradeharbor-fe-4.JPG" width="1000"/>
 
-## Technologies Used
+Friends dialog on the friend request tab:
+<img src="/Files/tradeharbor-fe-5.jpg" width="1000"/>
 
-- Angular 10.0.0
-- ASP.NET Core 8.0
-- MSSQL
-- Entity Framework 8.0
-- Angular Material 15.0.0
+User interacting with comments:
+<img src="/Files/tradeharbor-fe-6.jpg" width="1000"/>
 
-## Future Updates
+## Future Features
 - Trade posts need to include the option expiration date.
 - Modifications to allow strikeprice to be stored in decimal. The database allows it but data transfers rounds it.

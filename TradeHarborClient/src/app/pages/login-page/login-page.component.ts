@@ -32,7 +32,7 @@ export class LoginPageComponent {
     private router: Router
   ) {
     // TEMP VALUES FOR DEVELOPMENT
-    this.loginDto.email = 'jeff05@gmaill.com';
+    this.loginDto.email = 'jeffcollier@gmail.com';
     this.loginDto.password = 'Password123!';
   }
 

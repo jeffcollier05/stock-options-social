@@ -51,3 +51,6 @@ Provide a link or GIF/video demonstrating your application's functionality.
 - Entity Framework 8.0
 - Angular Material 15.0.0
 
+## Future Updates
+- Trade posts need to include the option expiration date.
+- Modifications to allow strikeprice to be stored in decimal. The database allows it but data transfers rounds it.

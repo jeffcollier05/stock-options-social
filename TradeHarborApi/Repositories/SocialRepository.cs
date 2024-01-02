@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
+using Azure.Core;
 using Dapper;
 using TradeHarborApi.Configuration;
 using TradeHarborApi.Models;
@@ -44,9 +45,14 @@ namespace TradeHarborApi.Repositories
         /// <returns>Collection of trade posts.</returns>
         public async Task<IEnumerable<TradePost>> GetTrades(string userId)
         {
+            var parameters = new
+            {
+                UserId = userId
+            };
+
             var procedure = "dbo.GetTrades";
             using var connection = GetSqlConnection();
-            var tradePosts = await connection.QueryAsync<TradePost>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
+            var tradePosts = await connection.QueryAsync<TradePost>(procedure, parameters, commandType: CommandType.StoredProcedure);
             return tradePosts;
         }
 
@@ -57,9 +63,15 @@ namespace TradeHarborApi.Repositories
         /// <param name="userId">User ID making the request.</param>
         public async Task DeleteTradePost(DeleteTradePostRequest request, string userId)
         {
+            var parameters = new
+            {
+                UserId = userId,
+                TradeId = request.TradeId
+            };
+
             var procedure = "dbo.DeleteTradePost";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { request.TradeId, userId }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -70,19 +82,18 @@ namespace TradeHarborApi.Repositories
         /// <returns>Object representing the newly created trade post.</returns>
         public async Task<int> CreateTradePost(CreateTradePostRequest request, string userId)
         {
-            var procedure = "dbo.CreateTradePost";
-
             var parameters = new
             {
-                userId,
-                request.Ticker,
-                request.Position,
-                request.Option,
-                request.Strikeprice,
-                request.Comment,
+                UserId = userId,
+                Ticker = request.Ticker,
+                Position = request.Position,
+                Option = request.Option,
+                Strikeprice = request.Strikeprice,
+                Comment = request.Comment,
                 Timestamp = DateTime.UtcNow
             };
 
+            var procedure = "dbo.CreateTradePost";
             using var connection = GetSqlConnection();
             var primaryKey = await connection.QueryAsync<int>(procedure, parameters, commandType: CommandType.StoredProcedure);
             return primaryKey.Single();
@@ -95,9 +106,14 @@ namespace TradeHarborApi.Repositories
         /// <returns>Collection of user profiles.</returns>
         public async Task<IEnumerable<UserProfile>> GetAllUsers(string userId)
         {
+            var parameters = new
+            {
+                UserId = userId
+            };
+
             var procedure = "dbo.GetAllUsers";
             using var connection = GetSqlConnection();
-            var users = await connection.QueryAsync<UserProfile>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
+            var users = await connection.QueryAsync<UserProfile>(procedure, parameters, commandType: CommandType.StoredProcedure);
             return users;
         }
 
@@ -108,9 +124,15 @@ namespace TradeHarborApi.Repositories
         /// <param name="user2Id">User ID of the second user.</param>
         public async Task RemoveFriend(string user1Id, string user2Id)
         {
+            var parameters = new
+            {
+                User1Id = user1Id,
+                User2Id = user2Id
+            };
+
             var procedure = "dbo.RemoveFriend";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { user1Id, user2Id }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -119,9 +141,16 @@ namespace TradeHarborApi.Repositories
         /// <param name="request">Request object containing notification details.</param>
         public async Task CreateNotification(CreateNotificationRequest request)
         {
+            var parameters = new
+            {
+                UserId = request.UserId,
+                Message = request.Message,
+                CreatedTimestamp = request.CreatedTimestamp
+            };
+
             var procedure = "dbo.CreateNotification";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, request, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -131,9 +160,14 @@ namespace TradeHarborApi.Repositories
         /// <returns>Collection of notifications.</returns>
         public async Task<IEnumerable<Notification>> GetNotifications(string userId)
         {
+            var parameters = new
+            {
+                UserId = userId
+            };
+
             var procedure = "dbo.GetNotifications";
             using var connection = GetSqlConnection();
-            var notifications = await connection.QueryAsync<Notification>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
+            var notifications = await connection.QueryAsync<Notification>(procedure, parameters, commandType: CommandType.StoredProcedure);
             return notifications;
         }
 
@@ -144,9 +178,15 @@ namespace TradeHarborApi.Repositories
         /// <param name="userId">User ID for whom to delete the notification.</param>
         public async Task DeleteNotification(DeleteNotificationRequest request, string userId)
         {
+            var parameters = new
+            {
+                UserId = userId,
+                NotificationId = request.NotificationId
+            };
+
             var procedure = "dbo.DeleteNotification";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { request.NotificationId, userId }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -156,9 +196,16 @@ namespace TradeHarborApi.Repositories
         /// <param name="request">Request object containing friend request details.</param>
         public async Task CreateFriendRequest(string requesterUserId, CreateFriendRequestRequest request)
         {
+            var parameters = new
+            {
+                SentTimestamp = DateTime.UtcNow,
+                RequesterUserId = requesterUserId,
+                ReceiverUserId = request.ReceiverUserId,
+            };
+
             var procedure = "dbo.CreateFriendRequest";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { requesterUserId, request.ReceiverUserId, SentTimestamp = DateTime.UtcNow }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -168,10 +215,15 @@ namespace TradeHarborApi.Repositories
         /// <param name="receiverUserId">User ID of the receiver.</param>
         public async Task DeclineFriendRequest(string requesterUserId, string receiverUserId)
         {
-            var procedure = "dbo.DeclineFriendRequest";
+            var parameters = new
+            {
+                RequesterUserId = requesterUserId,
+                ReceiverUserId = receiverUserId,
+            };
 
+            var procedure = "dbo.DeclineFriendRequest";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { requesterUserId, receiverUserId }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -181,9 +233,15 @@ namespace TradeHarborApi.Repositories
         /// <param name="receiverUserId">User ID of the receiver.</param>
         public async Task AcceptFriendRequest(string requesterUserId, string receiverUserId)
         {
+            var parameters = new
+            {
+                RequesterUserId = requesterUserId,
+                ReceiverUserId = receiverUserId,
+            };
+
             var procedure = "dbo.AcceptFriendRequest";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { requesterUserId, receiverUserId }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -193,9 +251,17 @@ namespace TradeHarborApi.Repositories
         /// <param name="userId">User ID of the reacting user.</param>
         public async Task ReactToPost(PostReactionRequest request, string userId)
         {
+            var parameters = new
+            {
+                UserId = userId,
+                ReactionType = request.ReactionType,
+                PostId = request.PostId,
+                Timestamp = DateTime.UtcNow
+            };
+
             var procedure = "dbo.ReactToPost";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { userId, request.ReactionType, request.PostId, Timestamp = DateTime.UtcNow }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -205,9 +271,17 @@ namespace TradeHarborApi.Repositories
         /// <param name="userId">User ID of the commenting user.</param>
         public async Task CommentOnPost(PostCommentRequest request, string userId)
         {
+            var parameters = new
+            {
+                UserId = userId,
+                Comment = request.Comment,
+                PostId = request.PostId,
+                Timestamp = DateTime.UtcNow
+            };
+
             var procedure = "dbo.CommentOnPost";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, new { request.PostId, request.Comment, userId, Timestamp = DateTime.UtcNow }, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -217,9 +291,14 @@ namespace TradeHarborApi.Repositories
         /// <returns>An enumerable collection of post comments.</returns>
         public async Task<IEnumerable<PostComment>> GetCommentsForPost(string postId)
         {
+            var parameters = new
+            {
+                PostId = postId
+            };
+
             var procedure = "dbo.GetCommentsForPost";
             using var connection = GetSqlConnection();
-            var comments = await connection.QueryAsync<PostComment>(procedure, new { postId }, commandType: CommandType.StoredProcedure );
+            var comments = await connection.QueryAsync<PostComment>(procedure, parameters, commandType: CommandType.StoredProcedure );
             return comments;
         }
 
@@ -232,9 +311,14 @@ namespace TradeHarborApi.Repositories
         /// </returns>
         public async Task<UserStatistics> GetUserStatistics(string userId)
         {
+            var parameters = new
+            {
+                UserId = userId
+            };
+
             var procedure = "dbo.GetUserStatistics";
             using var connection = GetSqlConnection();
-            var statistics = await connection.QueryAsync<UserStatistics>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
+            var statistics = await connection.QueryAsync<UserStatistics>(procedure, parameters, commandType: CommandType.StoredProcedure);
             return statistics.Single();
         }
     }

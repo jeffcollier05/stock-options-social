@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
@@ -40,9 +41,17 @@ namespace TradeHarborApi.Repositories
         /// <returns>An asynchronous task representing the insert operation.</returns>
         public async Task InsertLinkedAccountInformation(LinkedAccountDto request)
         {
+            var parameters = new
+            {
+                UserId = request.UserId,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                ProfilePictureUrl = request.ProfilePictureUrl
+            };
+
             var procedure = "dbo.InsertLinkedAccountInformation";
             using var connection = GetSqlConnection();
-            await connection.QueryAsync(procedure, request, commandType: CommandType.StoredProcedure);
+            await connection.QueryAsync(procedure, parameters, commandType: CommandType.StoredProcedure);
         }
 
         /// <summary>
@@ -55,9 +64,14 @@ namespace TradeHarborApi.Repositories
         /// </returns>
         public async Task<LinkedAccountDto> FindLinkedAccountInformation(string userId)
         {
+            var parameters = new
+            {
+                UserId = userId
+            };
+
             var procedure = "dbo.FindLinkedAccountInformation";
             using var connection = GetSqlConnection();
-            var linkedAccounts = await connection.QueryAsync<LinkedAccountDto>(procedure, new { userId }, commandType: CommandType.StoredProcedure);
+            var linkedAccounts = await connection.QueryAsync<LinkedAccountDto>(procedure, parameters, commandType: CommandType.StoredProcedure);
             return linkedAccounts.Single();
         }
     }

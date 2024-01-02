@@ -5,7 +5,7 @@
 [![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-8.0-blue.svg)](https://dotnet.microsoft.com/)
 [![Database](https://img.shields.io/badge/Database-MSSQL-blue.svg)](https://www.microsoft.com/en-us/sql-server)
 
-Welcome to TradeHarbor, your go-to social hub for stock option enthusiasts and traders! StockCollab is a dynamic platform designed for individuals passionate about stock options, where traders and investors can come together to share insights, create comments, and collaborate on their trades.
+Welcome to TradeHarbor, your go-to social hub for stock option enthusiasts and traders! TradeHarbor is a dynamic platform designed for individuals passionate about stock options, where traders and investors can come together to share insights, create comments, and collaborate on their trades.
 
 ## Table of Contents
 - [Technologies Used](#technologies-used)
@@ -15,7 +15,7 @@ Welcome to TradeHarbor, your go-to social hub for stock option enthusiasts and t
 
 ## Technologies Used
 
-- Angular 10.0.0
+- Angular 15.0.0
 - ASP.NET Core 8.0
 - MSSQL
 - Entity Framework 8.0
@@ -37,7 +37,7 @@ Welcome to TradeHarbor, your go-to social hub for stock option enthusiasts and t
    - Build a network of like-minded traders to enhance collaboration.
 
 4. **Notifications:**
-   - Receive notifications for new comments and friend requests.
+   - Receive notifications for events like new comments and friend requests.
    - Stay informed about interactions and activities related to your account.
 
 5. **Authentication:**
